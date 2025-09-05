@@ -5,22 +5,22 @@ public class Bert {
         String[] markNumber = line.split(" ");
         int taskNumToUnmark = Integer.parseInt(markNumber[1]) - 1;
         tasks[taskNumToUnmark].unmarkAsDone();
-        System.out.println("\tOk, I've unmarked this task:");
-        System.out.println("\t" + tasks[taskNumToUnmark]);
+        println("\tOk, I've unmarked this task:");
+        println("\t" + tasks[taskNumToUnmark]);
     }
 
     private static void markTask(String line, Task[] tasks) {
         String[] markNumber = line.split(" ");
         int taskNumToMark = Integer.parseInt(markNumber[1]) - 1;
         tasks[taskNumToMark].markAsDone();
-        System.out.println("\tNice! I've marked this task as done:");
-        System.out.println("\t" + tasks[taskNumToMark]);
+        println("\tNice! I've marked this task as done:");
+        println("\t" + tasks[taskNumToMark]);
     }
 
     private static void listTasks(int taskIndex, Task[] tasks) {
-        System.out.println("\tHere are the tasks in your list:");
+        println("\tHere are the tasks in your list:");
         for(int i = 1; i < taskIndex + 1; ++i) {
-            System.out.println("\t" + i + ". " + tasks[i - 1]);
+            println("\t" + i + ". " + tasks[i - 1]);
         }
     }
     private static void welcomeMenu(){
@@ -36,36 +36,38 @@ public class Bert {
                 "│ │              │ ││ │              │ ││ │              │ ││ │              │ │\n" +
                 "│ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │\n" +
                 " '────────────────'  '────────────────'  '────────────────'  '────────────────'\n";
-        System.out.println(logo + welcomeMessage);
+        println(logo + welcomeMessage);
     }
     public static void addTask(String line, Task[] tasks,int taskIndex) {
         String taskType = line.split(" ")[0];
+        String description = line.substring(line.indexOf(" ") + 1);
         int dividerPosition;
         switch (taskType) {
             case "todo":
-                tasks[taskIndex] = new Todo(line);
+                tasks[taskIndex] = new Todo(description);
                 break;
             case "deadline":
-                dividerPosition = line.indexOf("/");
-                String deadlineDescription = line.substring(0, dividerPosition).trim();
-                String deadline = line.substring(dividerPosition + 1);
+                dividerPosition = description.indexOf("/");
+                String deadlineDescription = description.substring(0, dividerPosition).trim();
+                String deadline = description.substring(dividerPosition + 1);
                 tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
                 break;
             case "event":
-                dividerPosition = line.indexOf("/");
-                int secondDividerPosition = line.indexOf("/",dividerPosition+1);
-
-                String eventDescription = line.substring(0, dividerPosition).trim();
-                String startTime = line.substring(dividerPosition + 1, secondDividerPosition).trim();
-                String endTime = line.substring(secondDividerPosition+1).trim();
-
+                dividerPosition = description.indexOf("/");
+                int secondDividerPosition = description.indexOf("/",dividerPosition+1);
+                String eventDescription = description.substring(0, dividerPosition).trim();
+                String startTime = description.substring(dividerPosition + 1, secondDividerPosition).trim();
+                String endTime = description.substring(secondDividerPosition+1).trim();
                 tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
                 break;
         }
-        print("\tadded " + line);
+        println("\tadded " + description + " as " + taskType + " type");
+    }
+    public static void println(String line) {
+        System.out.println(line);
     }
     public static void print(String line) {
-        System.out.println(line);
+        System.out.print(line);
     }
 
     public static void main(String[] args) {
@@ -74,31 +76,32 @@ public class Bert {
 
         String goodbyeMessage = "\t Bye. Hope to see you again soon!";
         Scanner in = new Scanner(System.in);
-        String line = in.nextLine();
         Task[] tasks = new Task[100];
+        int taskIndex=0;
 
-        for(int taskIndex = 0; !line.contentEquals("bye"); line = in.nextLine()) {
-            if (line.contentEquals("list")) {
-                listTasks(taskIndex, tasks);
-            } else if (line.startsWith("mark")) {
-                markTask(line, tasks);
-            } else if (line.startsWith("unmark")) {
-                unmarkTask(line, tasks);
-            } else if (line.startsWith("todo")) {
-                addTask(line, tasks, taskIndex);
-                ++taskIndex;
-            } else if (line.startsWith("deadline")) {
-                addTask(line, tasks, taskIndex);
-                ++taskIndex;
-            } else if (line.startsWith("event")) {
-                addTask(line, tasks, taskIndex);
-                ++taskIndex;
-            } else {
-                tasks[taskIndex] = new Task(line);
-                ++taskIndex;
-                System.out.println("\tadded " + line);
+        while(true){
+            String line = in.nextLine();
+            String command = line.split(" ")[0];
+            switch (command){
+                case "bye":
+                    println(goodbyeMessage);
+                    break;
+                case "list":
+                    listTasks(taskIndex, tasks);
+                    break;
+                case "mark":
+                    markTask(line, tasks);
+                    break;
+                case "unmark":
+                    unmarkTask(line, tasks);
+                    break;
+                case "todo":
+                case "deadline":
+                case "event":
+                    addTask(line, tasks, taskIndex);
+                    ++taskIndex;
+                    break;
             }
         }
-        System.out.println(goodbyeMessage);
     }
 }
