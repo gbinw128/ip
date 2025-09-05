@@ -1,26 +1,40 @@
 import java.util.Scanner;
 
 public class Bert {
-    private static void unmarkTask(String line, Task[] tasks) {
-        String[] markNumber = line.split(" ");
-        int taskNumToUnmark = Integer.parseInt(markNumber[1]) - 1;
-        tasks[taskNumToUnmark].unmarkAsDone();
-        println("\tOk, I've unmarked this task:");
-        println("\t" + tasks[taskNumToUnmark]);
-    }
 
-    private static void markTask(String line, Task[] tasks) {
-        String[] markNumber = line.split(" ");
-        int taskNumToMark = Integer.parseInt(markNumber[1]) - 1;
-        tasks[taskNumToMark].markAsDone();
-        println("\tNice! I've marked this task as done:");
-        println("\t" + tasks[taskNumToMark]);
-    }
+    public static void main(String[] args) {
+        String goodbyeMessage = "\t Bye. Hope to see you again soon!";
+        welcomeMenu();
 
-    private static void listTasks(int taskIndex, Task[] tasks) {
-        println("\tHere are the tasks in your list:");
-        for(int i = 1; i < taskIndex + 1; ++i) {
-            println("\t" + i + ". " + tasks[i - 1]);
+        Scanner in = new Scanner(System.in);
+        Task[] tasks = new Task[100];
+        int taskIndex=0;
+        while(true){
+            String line = in.nextLine();
+            String command = line.split(" ")[0];
+            switch (command){
+                case "bye":
+                    println(goodbyeMessage);
+                    return;
+                case "mark":
+                    markTask(line, tasks);
+                    break;
+                case "unmark":
+                    unmarkTask(line, tasks);
+                    break;
+                case "list":
+                    listTasks(taskIndex, tasks);
+                    break;
+                case "todo":
+                case "deadline":
+                case "event":
+                    addTask(line, tasks, taskIndex);
+                    ++taskIndex;
+                    break;
+                default:
+                    println("Invalid command");
+                    break;
+            }
         }
     }
     private static void welcomeMenu(){
@@ -38,6 +52,30 @@ public class Bert {
                 " '────────────────'  '────────────────'  '────────────────'  '────────────────'\n";
         println(logo + welcomeMessage);
     }
+
+    private static void markTask(String line, Task[] tasks) {
+        String[] markNumber = line.split(" ");
+        int taskNumToMark = Integer.parseInt(markNumber[1]) - 1;
+        tasks[taskNumToMark].markAsDone();
+        println("\tNice! I've marked this task as done:");
+        println("\t" + tasks[taskNumToMark]);
+    }
+
+    private static void unmarkTask(String line, Task[] tasks) {
+        String[] markNumber = line.split(" ");
+        int taskNumToUnmark = Integer.parseInt(markNumber[1]) - 1;
+        tasks[taskNumToUnmark].unmarkAsDone();
+        println("\tOk, I've unmarked this task:");
+        println("\t" + tasks[taskNumToUnmark]);
+    }
+
+    private static void listTasks(int taskIndex, Task[] tasks) {
+        println("\tHere are the tasks in your list:");
+        for(int i = 1; i < taskIndex + 1; ++i) {
+            println("\t" + i + ". " + tasks[i - 1]);
+        }
+    }
+
     public static void addTask(String line, Task[] tasks,int taskIndex) {
         String taskType = line.split(" ")[0];
         String description = line.substring(line.indexOf(" ") + 1);
@@ -63,48 +101,11 @@ public class Bert {
         }
         println("\tadded " + description + " as " + taskType + " type");
     }
+
     public static void println(String line) {
         System.out.println(line);
     }
     public static void print(String line) {
         System.out.print(line);
-    }
-
-    public static void main(String[] args) {
-
-        welcomeMenu();
-
-        String goodbyeMessage = "\t Bye. Hope to see you again soon!";
-        Scanner in = new Scanner(System.in);
-        Task[] tasks = new Task[100];
-        int taskIndex=0;
-
-        while(true){
-            String line = in.nextLine();
-            String command = line.split(" ")[0];
-            switch (command){
-                default:
-                    println("Invalid command");
-                    break;
-                case "bye":
-                    println(goodbyeMessage);
-                    return;
-                case "list":
-                    listTasks(taskIndex, tasks);
-                    break;
-                case "mark":
-                    markTask(line, tasks);
-                    break;
-                case "unmark":
-                    unmarkTask(line, tasks);
-                    break;
-                case "todo":
-                case "deadline":
-                case "event":
-                    addTask(line, tasks, taskIndex);
-                    ++taskIndex;
-                    break;
-            }
-        }
     }
 }
