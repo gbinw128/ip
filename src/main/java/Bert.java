@@ -19,17 +19,31 @@ public class Bert {
 
     private static void listTasks(int taskIndex, Task[] tasks) {
         System.out.println("\tHere are the tasks in your list:");
-
         for(int i = 1; i < taskIndex + 1; ++i) {
             System.out.println("\t" + i + ". " + tasks[i - 1]);
         }
-
+    }
+    private static void welcomeMenu(){
+        String welcomeMessage = "\t Hello! I'm BERT - Bot for Echo, Response and Talk\n\t What can I do for you?";
+        String logo= " .────────────────.  .────────────────.  .────────────────.  .────────────────. \n" +
+                "│ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │\n" +
+                "│ │   ______     │ ││ │  _________   │ ││ │  _______     │ ││ │  _________   │ │\n" +
+                "│ │  │_   _ ╲    │ ││ │ │_   ___  │  │ ││ │ │_   __ ╲    │ ││ │ │  _   _  │  │ │\n" +
+                "│ │    │ │_) │   │ ││ │   │ │_  ╲_│  │ ││ │   │ │__) │   │ ││ │ │_╱ │ │ ╲_│  │ │\n" +
+                "│ │    │  __'.   │ ││ │   │  _│  _   │ ││ │   │  __ ╱    │ ││ │     │ │      │ │\n" +
+                "│ │   _│ │__) │  │ ││ │  _│ │___╱ │  │ ││ │  _│ │  ╲ ╲_  │ ││ │    _│ │_     │ │\n" +
+                "│ │  │_______╱   │ ││ │ │_________│  │ ││ │ │____│ │___│ │ ││ │   │_____│    │ │\n" +
+                "│ │              │ ││ │              │ ││ │              │ ││ │              │ │\n" +
+                "│ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │\n" +
+                " '────────────────'  '────────────────'  '────────────────'  '────────────────'\n";
+        System.out.println(logo + welcomeMessage);
     }
 
     public static void main(String[] args) {
-        String welcomeMessage = "\t Hello! I'm BERT - Bot for Echo, Response and Talk\n\t What can I do for you?";
+
+        welcomeMenu();
+
         String goodbyeMessage = "\t Bye. Hope to see you again soon!";
-        System.out.println(welcomeMessage);
         Scanner in = new Scanner(System.in);
         String line = in.nextLine();
         Task[] tasks = new Task[100];
