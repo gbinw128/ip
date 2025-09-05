@@ -52,6 +52,17 @@ public class Bert {
                 tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
                 ++taskIndex;
                 System.out.println("\tadded " + line);
+            } else if (line.startsWith("event")) {
+                int dividerPosition = line.indexOf("/");
+                int secondDividerPosition = line.indexOf("/",dividerPosition+1);
+
+                String deadlineDescription = line.substring(0, dividerPosition).trim();
+                String startTime = line.substring(dividerPosition + 1, secondDividerPosition).trim();
+                String endTime = line.substring(secondDividerPosition+1).trim();
+
+                tasks[taskIndex] = new Event(deadlineDescription, startTime, endTime);
+                ++taskIndex;
+                System.out.println("\tadded " + line);
             } else {
                 tasks[taskIndex] = new Task(line);
                 ++taskIndex;
