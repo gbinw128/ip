@@ -41,13 +41,16 @@ public class Bert {
                 markTask(line, tasks);
             } else if (line.startsWith("unmark")) {
                 unmarkTask(line, tasks);
+            } else if (line.startsWith("todo")) {
+                tasks[taskIndex] = new Todo(line);
+                ++taskIndex;
+                System.out.println("\tadded " + line);
             } else {
                 tasks[taskIndex] = new Task(line);
                 ++taskIndex;
                 System.out.println("\tadded " + line);
             }
         }
-
         System.out.println(goodbyeMessage);
     }
 }
