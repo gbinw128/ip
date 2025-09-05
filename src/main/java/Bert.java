@@ -38,6 +38,35 @@ public class Bert {
                 " '────────────────'  '────────────────'  '────────────────'  '────────────────'\n";
         System.out.println(logo + welcomeMessage);
     }
+    public static void addTask(String line, Task[] tasks,int taskIndex) {
+        String taskType = line.split(" ")[0];
+        int dividerPosition;
+        switch (taskType) {
+            case "todo":
+                tasks[taskIndex] = new Todo(line);
+                break;
+            case "deadline":
+                dividerPosition = line.indexOf("/");
+                String deadlineDescription = line.substring(0, dividerPosition).trim();
+                String deadline = line.substring(dividerPosition + 1);
+                tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
+                break;
+            case "event":
+                dividerPosition = line.indexOf("/");
+                int secondDividerPosition = line.indexOf("/",dividerPosition+1);
+
+                String eventDescription = line.substring(0, dividerPosition).trim();
+                String startTime = line.substring(dividerPosition + 1, secondDividerPosition).trim();
+                String endTime = line.substring(secondDividerPosition+1).trim();
+
+                tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
+                break;
+        }
+        print("\tadded " + line);
+    }
+    public static void print(String line) {
+        System.out.println(line);
+    }
 
     public static void main(String[] args) {
 
@@ -56,27 +85,14 @@ public class Bert {
             } else if (line.startsWith("unmark")) {
                 unmarkTask(line, tasks);
             } else if (line.startsWith("todo")) {
-                tasks[taskIndex] = new Todo(line);
+                addTask(line, tasks, taskIndex);
                 ++taskIndex;
-                System.out.println("\tadded " + line);
             } else if (line.startsWith("deadline")) {
-                int dividerPosition = line.indexOf("/");
-                String deadlineDescription = line.substring(0, dividerPosition).trim();
-                String deadline = line.substring(dividerPosition + 1);
-                tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
+                addTask(line, tasks, taskIndex);
                 ++taskIndex;
-                System.out.println("\tadded " + line);
             } else if (line.startsWith("event")) {
-                int dividerPosition = line.indexOf("/");
-                int secondDividerPosition = line.indexOf("/",dividerPosition+1);
-
-                String deadlineDescription = line.substring(0, dividerPosition).trim();
-                String startTime = line.substring(dividerPosition + 1, secondDividerPosition).trim();
-                String endTime = line.substring(secondDividerPosition+1).trim();
-
-                tasks[taskIndex] = new Event(deadlineDescription, startTime, endTime);
+                addTask(line, tasks, taskIndex);
                 ++taskIndex;
-                System.out.println("\tadded " + line);
             } else {
                 tasks[taskIndex] = new Task(line);
                 ++taskIndex;
