@@ -45,6 +45,13 @@ public class Bert {
                 tasks[taskIndex] = new Todo(line);
                 ++taskIndex;
                 System.out.println("\tadded " + line);
+            } else if (line.startsWith("deadline")) {
+                int dividerPosition = line.indexOf("/");
+                String deadlineDescription = line.substring(0, dividerPosition).trim();
+                String deadline = line.substring(dividerPosition + 1);
+                tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
+                ++taskIndex;
+                System.out.println("\tadded " + line);
             } else {
                 tasks[taskIndex] = new Task(line);
                 ++taskIndex;
