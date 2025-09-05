@@ -83,9 +83,12 @@ public class Bert {
             String line = in.nextLine();
             String command = line.split(" ")[0];
             switch (command){
+                default:
+                    println("Invalid command");
+                    break;
                 case "bye":
                     println(goodbyeMessage);
-                    break;
+                    return;
                 case "list":
                     listTasks(taskIndex, tasks);
                     break;
