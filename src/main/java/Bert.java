@@ -1,8 +1,10 @@
+import exceptions.TodoItemError;
+
 import java.util.Scanner;
 
 public class Bert {
 
-    private static int taskIndex=0;
+    private static int taskIndex;
 
     public static void main(String[] args) {
         String goodbyeMessage = "\tBye. Hope to see you again soon!";
@@ -10,6 +12,7 @@ public class Bert {
 
         Scanner in = new Scanner(System.in);
         Task[] tasks = new Task[100];
+        taskIndex = 0;
         while(true){
             String line = in.nextLine();
             String command = commandCheck(line);
@@ -29,10 +32,7 @@ public class Bert {
                 case "todo":
                 case "deadline":
                 case "event":
-                    addTask(line, tasks, taskIndex);
-                    println("\tGot it. I've added this task:\n\t\t" + tasks[taskIndex]);
-                    ++taskIndex;
-                    println("\tNow you have " + taskIndex + " tasks in the list.");
+                    addTask(line, tasks);
                     break;
                 default:
                     println("Invalid command");
@@ -113,13 +113,20 @@ public class Bert {
         }
     }
 
-    public static void addTask(String line, Task[] tasks,int taskIndex) {
+    public static void addTask(String line, Task[] tasks) {
         String taskType = commandCheck(line);
         String cleanLine = cleanLine(line);
         String description = cleanLine.substring(cleanLine.indexOf(" ") + 1);
         switch (taskType) {
             case "todo":
-                addTodo(tasks, taskIndex, description);
+                try{
+                    addTodo(tasks, taskIndex, cleanLine);
+                    ++taskIndex;
+                    successfulAddMessage(tasks);
+                }
+                catch(TodoItemError e){
+                    println("ERROR: Empty item in ToDo");
+                }
                 break;
             case "deadline":
                 addDeadline(tasks, taskIndex, description);
@@ -130,8 +137,17 @@ public class Bert {
         }
     }
 
-    private static void addTodo(Task[] tasks, int taskIndex, String description) {
-        tasks[taskIndex] = new Todo(description);
+    private static void successfulAddMessage(Task[] tasks) {
+        println("\tGot it. I've added this task:\n\t\t" + tasks[taskIndex-1]);
+        println("\tNow you have " + taskIndex + " tasks in the list.");
+    }
+
+    private static void addTodo(Task[] tasks, int taskIndex, String cleanLine) throws TodoItemError {
+        String item = cleanLine.substring(4).trim();
+        if(item.isEmpty()) {
+            throw new TodoItemError();
+        }
+        tasks[taskIndex] = new Todo(item);
     }
 
     private static void addEvent(Task[] tasks, int taskIndex, String description) {
