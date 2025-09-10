@@ -21,10 +21,22 @@ public class Bert {
                     println(goodbyeMessage);
                     return;
                 case "mark":
-                    markTask(line, tasks);
+                    try{
+                        markTask(line, tasks);
+                    } catch (MarkUnmarkNumberError e) {
+                        println("ERROR: Number wrong");
+                    } catch (MarkUnmarkItemError e) {
+                        println("ERROR: Item does not exist");
+                    }
                     break;
                 case "unmark":
-                    unmarkTask(line, tasks);
+                    try{
+                        unmarkTask(line, tasks);
+                    } catch (MarkUnmarkNumberError e) {
+                        println("ERROR: Number wrong");
+                    } catch (MarkUnmarkItemError e) {
+                        println("ERROR: Item does not exist");
+                    }
                     break;
                 case "list":
                     listTasks(taskIndex, tasks);
@@ -46,7 +58,7 @@ public class Bert {
         return line.replaceFirst("^\\s*", "");
     }
     private static String commandCheck(String line) {
-        String appendedLine = line.replaceAll("\\s","");
+        String appendedLine = cleanFrontSpacing(line);
         if(appendedLine.startsWith("bye")){
             return "bye";
         }else if(appendedLine.startsWith("mark")){
@@ -89,17 +101,33 @@ public class Bert {
         println(logo + welcomeMessage+commandMessage);
     }
 
-    private static void markTask(String line, Task[] tasks) {
-        String[] markNumber = line.split(" ");
-        int taskNumToMark = Integer.parseInt(markNumber[1]) - 1;
+    private static void markTask(String line, Task[] tasks) throws MarkUnmarkNumberError, MarkUnmarkItemError {
+        int markWordSize = "mark".length();
+        String cleanLine = cleanFrontSpacing(line);
+        if(cleanLine.length() <=markWordSize){
+            throw new MarkUnmarkNumberError();
+        }
+        String markNumber = cleanLine.substring(markWordSize).trim();
+        int taskNumToMark = Integer.parseInt(markNumber) - 1;
+        if(taskNumToMark >= taskIndex){
+            throw new MarkUnmarkItemError();
+        }
         tasks[taskNumToMark].markAsDone();
         println("\tNice! I've marked this task as done:");
         println("\t" + tasks[taskNumToMark]);
     }
 
-    private static void unmarkTask(String line, Task[] tasks) {
-        String[] markNumber = line.split(" ");
-        int taskNumToUnmark = Integer.parseInt(markNumber[1]) - 1;
+    private static void unmarkTask(String line, Task[] tasks) throws MarkUnmarkNumberError, MarkUnmarkItemError {
+        int unmarkWordSize = "unmark".length();
+        String cleanLine = cleanFrontSpacing(line);
+        if(cleanLine.length() <=unmarkWordSize){
+            throw new MarkUnmarkNumberError();
+        }
+        String unmarkNumber = cleanLine.substring(unmarkWordSize).trim();
+        int taskNumToUnmark = Integer.parseInt(unmarkNumber) - 1;
+        if(taskNumToUnmark >= taskIndex){
+            throw new MarkUnmarkItemError();
+        }
         tasks[taskNumToUnmark].unmarkAsDone();
         println("\tOk, I've unmarked this task:");
         println("\t" + tasks[taskNumToUnmark]);
@@ -177,8 +205,7 @@ public class Bert {
         if(dateCheck.length()<=3){
             throw new DeadlineDateError();
         }
-        int dividerPosition;
-        dividerPosition = cleanLine.indexOf("/by");
+        int dividerPosition = cleanLine.indexOf("/by");
         String deadlineDescription = cleanLine.substring(8, dividerPosition).trim();
         String deadline = cleanLine.substring(dividerPosition + 3).trim();
         tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
@@ -198,8 +225,7 @@ public class Bert {
         if(from_DateCheck.length()<=5 ||  to_DateCheck.length()<=3){
             throw new EventDateError();
         }
-        int dividerPosition;
-        dividerPosition = cleanLine.indexOf("/from");
+        int dividerPosition = cleanLine.indexOf("/from");
         int secondDividerPosition = cleanLine.indexOf("/to",dividerPosition+1);
         String eventDescription = cleanLine.substring(5, dividerPosition).trim();
         String startTime = cleanLine.substring(dividerPosition + 5, secondDividerPosition).trim();
