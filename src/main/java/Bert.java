@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Bert {
 
     public static void main(String[] args) {
-        String goodbyeMessage = "\t Bye. Hope to see you again soon!";
+        String goodbyeMessage = "\tBye. Hope to see you again soon!";
         welcomeMenu();
 
         Scanner in = new Scanner(System.in);
@@ -29,7 +29,9 @@ public class Bert {
                 case "deadline":
                 case "event":
                     addTask(line, tasks, taskIndex);
+                    println("\tGot it. I've added this task:\n\t\t" + tasks[taskIndex]);
                     ++taskIndex;
+                    println("\tNow you have " + taskIndex + " tasks in the list.");
                     break;
                 default:
                     println("Invalid command");
@@ -38,7 +40,6 @@ public class Bert {
         }
     }
     private static void welcomeMenu(){
-        String welcomeMessage = "\t Hello! I'm BERT - Bot for Echo, Response and Talk\n\t What can I do for you?";
         String logo= " .────────────────.  .────────────────.  .────────────────.  .────────────────. \n" +
                 "│ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │\n" +
                 "│ │   ______     │ ││ │  _________   │ ││ │  _______     │ ││ │  _________   │ │\n" +
@@ -50,7 +51,10 @@ public class Bert {
                 "│ │              │ ││ │              │ ││ │              │ ││ │              │ │\n" +
                 "│ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │\n" +
                 " '────────────────'  '────────────────'  '────────────────'  '────────────────'\n";
-        println(logo + welcomeMessage);
+        String welcomeMessage = "\tHello! I'm BERT - Bot for Echo, Response and Talk \n\tHere are the following commands:";
+        String commandMessage = "\n\t-todo <item> \n\t-deadline <item> /by <date> \n\t-event <item> /from <date> /to <date>" +
+                "\n\t-mark <itemNumber> \n\t-unmark <itemNumber> \n\t-list \n\t-bye ";
+        println(logo + welcomeMessage+commandMessage);
     }
 
     private static void markTask(String line, Task[] tasks) {
@@ -82,24 +86,37 @@ public class Bert {
         int dividerPosition;
         switch (taskType) {
             case "todo":
-                tasks[taskIndex] = new Todo(description);
+                addTodo(tasks, taskIndex, description);
                 break;
             case "deadline":
-                dividerPosition = description.indexOf("/");
-                String deadlineDescription = description.substring(0, dividerPosition).trim();
-                String deadline = description.substring(dividerPosition + 1);
-                tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
+                addDeadline(tasks, taskIndex, description);
                 break;
             case "event":
-                dividerPosition = description.indexOf("/");
-                int secondDividerPosition = description.indexOf("/",dividerPosition+1);
-                String eventDescription = description.substring(0, dividerPosition).trim();
-                String startTime = description.substring(dividerPosition + 1, secondDividerPosition).trim();
-                String endTime = description.substring(secondDividerPosition+1).trim();
-                tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
+                addEvent(tasks, taskIndex, description);
                 break;
         }
-        println("\tadded " + description + " as " + taskType + " type");
+    }
+
+    private static void addTodo(Task[] tasks, int taskIndex, String description) {
+        tasks[taskIndex] = new Todo(description);
+    }
+
+    private static void addEvent(Task[] tasks, int taskIndex, String description) {
+        int dividerPosition;
+        dividerPosition = description.indexOf("/from");
+        int secondDividerPosition = description.indexOf("/to",dividerPosition+1);
+        String eventDescription = description.substring(0, dividerPosition).trim();
+        String startTime = description.substring(dividerPosition + 5, secondDividerPosition).trim();
+        String endTime = description.substring(secondDividerPosition+3).trim();
+        tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
+    }
+
+    private static void addDeadline(Task[] tasks, int taskIndex, String description) {
+        int dividerPosition;
+        dividerPosition = description.indexOf("/by");
+        String deadlineDescription = description.substring(0, dividerPosition).trim();
+        String deadline = description.substring(dividerPosition + 3).trim();
+        tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
     }
 
     public static void println(String line) {
