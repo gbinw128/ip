@@ -2,16 +2,17 @@ import java.util.Scanner;
 
 public class Bert {
 
+    private static int taskIndex=0;
+
     public static void main(String[] args) {
         String goodbyeMessage = "\tBye. Hope to see you again soon!";
         welcomeMenu();
 
         Scanner in = new Scanner(System.in);
         Task[] tasks = new Task[100];
-        int taskIndex=0;
         while(true){
             String line = in.nextLine();
-            String command = line.split(" ")[0];
+            String command = commandCheck(line);
             switch (command){
                 case "bye":
                     println(goodbyeMessage);
@@ -39,6 +40,32 @@ public class Bert {
             }
         }
     }
+
+
+    private static String cleanLine(String line){
+        String tempLine = line.replaceFirst("^\\s*", "");
+        return tempLine;
+    }
+    private static String commandCheck(String line) {
+        String appendedLine = line.replaceAll("\\s","");
+        if(appendedLine.startsWith("bye")){
+            return "bye";
+        }else if(appendedLine.startsWith("mark")){
+            return "mark";
+        }else if(appendedLine.startsWith("unmark")){
+            return "unmark";
+        }else if(appendedLine.startsWith("list")) {
+            return "list";
+        }else if(appendedLine.startsWith("todo")) {
+            return "todo";
+        }else if(appendedLine.startsWith("deadline")) {
+            return "deadline";
+        }else if(appendedLine.startsWith("event")) {
+            return "event";
+        }
+        return "";
+    }
+
     private static void welcomeMenu(){
         String logo= " .────────────────.  .────────────────.  .────────────────.  .────────────────. \n" +
                 "│ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │\n" +
@@ -52,8 +79,14 @@ public class Bert {
                 "│ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │\n" +
                 " '────────────────'  '────────────────'  '────────────────'  '────────────────'\n";
         String welcomeMessage = "\tHello! I'm BERT - Bot for Echo, Response and Talk \n\tHere are the following commands:";
-        String commandMessage = "\n\t-todo <item> \n\t-deadline <item> /by <date> \n\t-event <item> /from <date> /to <date>" +
-                "\n\t-mark <itemNumber> \n\t-unmark <itemNumber> \n\t-list \n\t-bye ";
+        String commandMessage = """
+                \n\t-todo <item>
+                \t-deadline <item> /by <date>
+                \t-event <item> /from <date> /to <date>
+                \t-mark <itemNumber>
+                \t-unmark <itemNumber>
+                \t-list
+                \t-bye""";
         println(logo + welcomeMessage+commandMessage);
     }
 
@@ -81,9 +114,9 @@ public class Bert {
     }
 
     public static void addTask(String line, Task[] tasks,int taskIndex) {
-        String taskType = line.split(" ")[0];
-        String description = line.substring(line.indexOf(" ") + 1);
-        int dividerPosition;
+        String taskType = commandCheck(line);
+        String cleanLine = cleanLine(line);
+        String description = cleanLine.substring(cleanLine.indexOf(" ") + 1);
         switch (taskType) {
             case "todo":
                 addTodo(tasks, taskIndex, description);
@@ -124,5 +157,9 @@ public class Bert {
     }
     public static void print(String line) {
         System.out.print(line);
+    }
+    public static void pt(String test)
+    {
+        System.out.println("XX"+test+"XX");
     }
 }
