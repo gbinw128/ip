@@ -42,9 +42,8 @@ public class Bert {
     }
 
 
-    private static String cleanLine(String line){
-        String tempLine = line.replaceFirst("^\\s*", "");
-        return tempLine;
+    private static String cleanFrontSpacing(String line){
+        return line.replaceFirst("^\\s*", "");
     }
     private static String commandCheck(String line) {
         String appendedLine = line.replaceAll("\\s","");
@@ -115,7 +114,7 @@ public class Bert {
 
     public static void addTask(String line, Task[] tasks) {
         String taskType = commandCheck(line);
-        String cleanLine = cleanLine(line);
+        String cleanLine = cleanFrontSpacing(line);
         switch (taskType) {
             case "todo":
                 try{
