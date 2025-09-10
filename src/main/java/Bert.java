@@ -1,3 +1,5 @@
+import exceptions.DeadlineDateError;
+import exceptions.DeadlineItemError;
 import exceptions.TodoItemError;
 
 import java.util.Scanner;
@@ -123,13 +125,21 @@ public class Bert {
                     addTodo(tasks, taskIndex, cleanLine);
                     ++taskIndex;
                     successfulAddMessage(tasks);
-                }
-                catch(TodoItemError e){
+                } catch(TodoItemError e){
                     println("ERROR: Empty item in ToDo");
                 }
                 break;
             case "deadline":
-                addDeadline(tasks, taskIndex, description);
+                try
+                {
+                    addDeadline(tasks, taskIndex, cleanLine);
+                    ++taskIndex;
+                    successfulAddMessage(tasks);
+                } catch (DeadlineItemError e){
+                    println("ERROR: Empty item in Deadline");
+                } catch (DeadlineDateError e){
+                    println("ERROR: Empty date in Deadline");
+                }
                 break;
             case "event":
                 addEvent(tasks, taskIndex, description);
@@ -150,6 +160,26 @@ public class Bert {
         tasks[taskIndex] = new Todo(item);
     }
 
+    private static void addDeadline(Task[] tasks, int taskIndex, String cleanLine)
+            throws DeadlineItemError, DeadlineDateError {
+        String itemCheck =cleanLine.substring(8,cleanLine.indexOf("/by")).trim();
+        if(itemCheck.isEmpty()) {
+            throw new DeadlineItemError();
+        }
+        if(!cleanLine.contains("/by")){
+            throw new DeadlineDateError();
+        }
+        String dateCheck =cleanLine.substring(cleanLine.indexOf("/by")).trim();
+        if(dateCheck.length()<4){
+            throw new DeadlineDateError();
+        }
+        int dividerPosition;
+        dividerPosition = cleanLine.indexOf("/by");
+        String deadlineDescription = cleanLine.substring(0, dividerPosition).trim();
+        String deadline = cleanLine.substring(dividerPosition + 3).trim();
+        tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
+    }
+
     private static void addEvent(Task[] tasks, int taskIndex, String description) {
         int dividerPosition;
         dividerPosition = description.indexOf("/from");
@@ -158,14 +188,6 @@ public class Bert {
         String startTime = description.substring(dividerPosition + 5, secondDividerPosition).trim();
         String endTime = description.substring(secondDividerPosition+3).trim();
         tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
-    }
-
-    private static void addDeadline(Task[] tasks, int taskIndex, String description) {
-        int dividerPosition;
-        dividerPosition = description.indexOf("/by");
-        String deadlineDescription = description.substring(0, dividerPosition).trim();
-        String deadline = description.substring(dividerPosition + 3).trim();
-        tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
     }
 
     public static void println(String line) {
