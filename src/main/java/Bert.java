@@ -1,6 +1,4 @@
-import exceptions.DeadlineDateError;
-import exceptions.DeadlineItemError;
-import exceptions.TodoItemError;
+import exceptions.*;
 
 import java.util.Scanner;
 
@@ -118,7 +116,6 @@ public class Bert {
     public static void addTask(String line, Task[] tasks) {
         String taskType = commandCheck(line);
         String cleanLine = cleanLine(line);
-        String description = cleanLine.substring(cleanLine.indexOf(" ") + 1);
         switch (taskType) {
             case "todo":
                 try{
@@ -142,7 +139,15 @@ public class Bert {
                 }
                 break;
             case "event":
-                addEvent(tasks, taskIndex, description);
+                try{
+                    addEvent(tasks, taskIndex, cleanLine);
+                    ++taskIndex;
+                    successfulAddMessage(tasks);
+                } catch(EventItemError e){
+                    println("ERROR: Empty item in Event");
+                } catch(EventDateError e){
+                    println("ERROR: Empty date in Event");
+                }
                 break;
         }
     }
@@ -170,23 +175,36 @@ public class Bert {
             throw new DeadlineDateError();
         }
         String dateCheck =cleanLine.substring(cleanLine.indexOf("/by")).trim();
-        if(dateCheck.length()<4){
+        if(dateCheck.length()<=3){
             throw new DeadlineDateError();
         }
         int dividerPosition;
         dividerPosition = cleanLine.indexOf("/by");
-        String deadlineDescription = cleanLine.substring(0, dividerPosition).trim();
+        String deadlineDescription = cleanLine.substring(8, dividerPosition).trim();
         String deadline = cleanLine.substring(dividerPosition + 3).trim();
         tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
     }
 
-    private static void addEvent(Task[] tasks, int taskIndex, String description) {
+    private static void addEvent(Task[] tasks, int taskIndex, String cleanLine)
+            throws EventItemError,EventDateError {
+        String itemCheck =cleanLine.substring(5,cleanLine.indexOf("/from")).trim();
+        if(itemCheck.isEmpty()) {
+            throw new EventItemError();
+        }
+        if(!cleanLine.contains("/from") || !cleanLine.contains("/to")){
+            throw new EventDateError();
+        }
+        String from_DateCheck =cleanLine.substring(cleanLine.indexOf("/from"),cleanLine.indexOf("/to")).trim();
+        String to_DateCheck =cleanLine.substring(cleanLine.indexOf("/to")).trim();
+        if(from_DateCheck.length()<=5 ||  to_DateCheck.length()<=3){
+            throw new EventDateError();
+        }
         int dividerPosition;
-        dividerPosition = description.indexOf("/from");
-        int secondDividerPosition = description.indexOf("/to",dividerPosition+1);
-        String eventDescription = description.substring(0, dividerPosition).trim();
-        String startTime = description.substring(dividerPosition + 5, secondDividerPosition).trim();
-        String endTime = description.substring(secondDividerPosition+3).trim();
+        dividerPosition = cleanLine.indexOf("/from");
+        int secondDividerPosition = cleanLine.indexOf("/to",dividerPosition+1);
+        String eventDescription = cleanLine.substring(5, dividerPosition).trim();
+        String startTime = cleanLine.substring(dividerPosition + 5, secondDividerPosition).trim();
+        String endTime = cleanLine.substring(secondDividerPosition+3).trim();
         tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
     }
 
