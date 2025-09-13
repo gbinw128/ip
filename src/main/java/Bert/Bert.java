@@ -27,18 +27,18 @@ public class Bert {
                     try{
                         markTask(line);
                     } catch (MarkUnmarkNumberError e) {
-                        println("ERROR: Number wrong");
+                        println("ERROR(Mark): Number Missing");
                     } catch (MarkUnmarkItemError e) {
-                        println("ERROR: Item does not exist");
+                        println("ERROR(Mark): Item does not exist");
                     }
                     break;
                 case "unmark":
                     try{
                         unmarkTask(line);
                     } catch (MarkUnmarkNumberError e) {
-                        println("ERROR: Number wrong");
+                        println("ERROR(Unmark): Number Missing");
                     } catch (MarkUnmarkItemError e) {
-                        println("ERROR: Item does not exist");
+                        println("ERROR(Unmark): Item does not exist");
                     }
                     break;
                 case "list":
@@ -50,7 +50,13 @@ public class Bert {
                     addTask(line);
                     break;
                 case "delete":
-                    deleteTask(line);
+                    try{
+                        deleteTask(line);
+                    } catch (DeleteNumberError e){
+                        println("ERROR(Delete): Number Missing");
+                    } catch (DeleteItemError e){
+                        println("ERROR(Delete): Item does not exist");
+                    }
                     break;
                 default:
                     println("Invalid command");
@@ -112,7 +118,7 @@ public class Bert {
     private static void markTask(String line)
             throws MarkUnmarkNumberError, MarkUnmarkItemError {
         int markWordSize = "mark".length();
-        String cleanLine = cleanFrontSpacing(line);
+        String cleanLine = cleanFrontSpacing(line).trim();
         if(cleanLine.length() <=markWordSize){
             throw new MarkUnmarkNumberError();
         }
@@ -129,7 +135,7 @@ public class Bert {
     private static void unmarkTask(String line)
             throws MarkUnmarkNumberError, MarkUnmarkItemError {
         int unmarkWordSize = "unmark".length();
-        String cleanLine = cleanFrontSpacing(line);
+        String cleanLine = cleanFrontSpacing(line).trim();
         if(cleanLine.length() <=unmarkWordSize){
             throw new MarkUnmarkNumberError();
         }
@@ -152,9 +158,9 @@ public class Bert {
     }
     private static void deleteTask(String line) {
         int deleteWordSize = "delete".length();
-        String cleanLine = cleanFrontSpacing(line);
+        String cleanLine = cleanFrontSpacing(line).trim();
         if(cleanLine.length() <=deleteWordSize){
-            throw new MarkUnmarkNumberError();
+            throw new DeleteNumberError();
         }
         String deleteNumber = cleanLine.substring(deleteWordSize).trim();
         int taskNumToDelete = Integer.parseInt(deleteNumber) - 1;
