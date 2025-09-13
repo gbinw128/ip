@@ -2,12 +2,14 @@ package Bert;
 
 import exceptions.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Bert {
 
     private static int taskIndex;
 
+    private static ArrayList<Task> taskAL = new ArrayList<Task>();
     public static void main(String[] args) {
         String goodbyeMessage = "\tBye. Hope to see you again soon!";
         welcomeMenu();
@@ -41,19 +43,22 @@ public class Bert {
                     }
                     break;
                 case "list":
-                    listTasks(taskIndex, tasks);
+                    listTasks(tasks);
                     break;
                 case "todo":
                 case "deadline":
                 case "event":
                     addTask(line, tasks);
                     break;
+                case "delete":
+                    deleteTask(line, tasks);
                 default:
                     println("Invalid command");
                     break;
             }
         }
     }
+
 
 
     private static String cleanFrontSpacing(String line){
@@ -134,11 +139,25 @@ public class Bert {
         println("\tOk, I've unmarked this task:");
         println("\t" + tasks[taskNumToUnmark]);
     }
-    private static void listTasks(int taskIndex, Task[] tasks) {
+    private static void listTasks(Task[] tasks) {
         println("\tHere are the tasks in your list:");
         for(int i = 1; i < taskIndex + 1; ++i) {
             println("\t" + i + ". " + tasks[i - 1]);
         }
+    }
+    private static void deleteTask(String line, Task[] tasks) {
+        int deleteWordSize = "delete".length();
+        String cleanLine = cleanFrontSpacing(line);
+        if(cleanLine.length() <=deleteWordSize){
+            throw new MarkUnmarkNumberError();
+        }
+        String deleteNumber = cleanLine.substring(deleteWordSize).trim();
+        int taskNumToDelete = Integer.parseInt(deleteNumber) - 1;
+        if(taskNumToDelete >= taskIndex){
+            throw new DeleteItemError();
+        }
+        taskAL.remove(tasks[taskNumToDelete]);
+        println("\tUnderstood, I've Deleted this task:");
     }
 
     public static void addTask(String line, Task[] tasks) {
@@ -191,6 +210,7 @@ public class Bert {
             throw new TodoItemError();
         }
         tasks[taskIndex] = new Todo(item);
+        taskAL.add(tasks[taskIndex]);
     }
 
     private static void addDeadline(Task[] tasks, int taskIndex, String cleanLine)
