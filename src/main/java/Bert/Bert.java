@@ -1,24 +1,26 @@
 package Bert;
 
 import exceptions.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Bert {
 
-    private static int taskIndex;
-    private static Task[] tasks = new Task[100];
-
+    private static ArrayList<Task> taskAL = new ArrayList<Task>();
     public static void main(String[] args) {
         String goodbyeMessage = "\tBye. Hope to see you again soon!";
         welcomeMenu();
-
+        try{
+            readFromFile();
+        } catch (IOException e){
+            println("READERROR");
+        }
         Scanner in = new Scanner(System.in);
-        //Task[] tasks = new Task[100];
-        taskIndex = 0;
         while(true){
             String line = in.nextLine();
             String command = commandCheck(line);
@@ -27,44 +29,43 @@ public class Bert {
                     println(goodbyeMessage);
                     try{
                         writeToFile();
-                    } catch(FileNotFoundException  e){
-                        println("File: smth wrong");
-                    } catch(IOException  e){
+                    } catch(IOException e){
                         println("IO: smth wrong");
                     }
                     return;
                 case "mark":
                     try{
-                        markTask(line, tasks);
+                        markTask(line);
                     } catch (MarkUnmarkNumberError e) {
-                        println("ERROR: Number wrong");
+                        println("\tERROR(Mark): Number Missing");
                     } catch (MarkUnmarkItemError e) {
-                        println("ERROR: Item does not exist");
+                        println("\tERROR(Mark): Item does not exist");
                     }
                     break;
                 case "unmark":
                     try{
-                        unmarkTask(line, tasks);
+                        unmarkTask(line);
                     } catch (MarkUnmarkNumberError e) {
-                        println("ERROR: Number wrong");
+                        println("\tERROR(Unmark): Number Missing");
                     } catch (MarkUnmarkItemError e) {
-                        println("ERROR: Item does not exist");
+                        println("\tERROR(Unmark): Item does not exist");
                     }
                     break;
                 case "list":
-                    listTasks(taskIndex, tasks);
+                    listTasks();
                     break;
                 case "todo":
                 case "deadline":
                 case "event":
-                    addTask(line, tasks);
+                    addTask(line);
                     break;
                 default:
-                    println("Invalid command");
+                    println("\tERROR: Invalid command");
                     break;
             }
         }
     }
+
 
 
     private static String cleanFrontSpacing(String line){
@@ -86,23 +87,27 @@ public class Bert {
             return "deadline";
         }else if(appendedLine.startsWith("event")) {
             return "event";
+        }else if(appendedLine.startsWith("delete")) {
+            return "delete";
         }
         return "";
     }
-
     private static void welcomeMenu(){
-        String logo= " .────────────────.  .────────────────.  .────────────────.  .────────────────. \n" +
-                "│ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │\n" +
-                "│ │   ______     │ ││ │  _________   │ ││ │  _______     │ ││ │  _________   │ │\n" +
-                "│ │  │_   _ ╲    │ ││ │ │_   ___  │  │ ││ │ │_   __ ╲    │ ││ │ │  _   _  │  │ │\n" +
-                "│ │    │ │_) │   │ ││ │   │ │_  ╲_│  │ ││ │   │ │__) │   │ ││ │ │_╱ │ │ ╲_│  │ │\n" +
-                "│ │    │  __'.   │ ││ │   │  _│  _   │ ││ │   │  __ ╱    │ ││ │     │ │      │ │\n" +
-                "│ │   _│ │__) │  │ ││ │  _│ │___╱ │  │ ││ │  _│ │  ╲ ╲_  │ ││ │    _│ │_     │ │\n" +
-                "│ │  │_______╱   │ ││ │ │_________│  │ ││ │ │____│ │___│ │ ││ │   │_____│    │ │\n" +
-                "│ │              │ ││ │              │ ││ │              │ ││ │              │ │\n" +
-                "│ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │\n" +
-                " '────────────────'  '────────────────'  '────────────────'  '────────────────'\n";
-        String welcomeMessage = "\tHello! I'm BERT - Bot for Echo, Response and Talk \n\tHere are the following commands:";
+        String logo= """
+                 .────────────────.  .────────────────.  .────────────────.  .────────────────.
+                │ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │
+                │ │   ______     │ ││ │  _________   │ ││ │  _______     │ ││ │  _________   │ │
+                │ │  │_   _ ╲    │ ││ │ │_   ___  │  │ ││ │ │_   __ ╲    │ ││ │ │  _   _  │  │ │
+                │ │    │ │_) │   │ ││ │   │ │_  ╲_│  │ ││ │   │ │__) │   │ ││ │ │_╱ │ │ ╲_│  │ │
+                │ │    │  __'.   │ ││ │   │  _│  _   │ ││ │   │  __ ╱    │ ││ │     │ │      │ │
+                │ │   _│ │__) │  │ ││ │  _│ │___╱ │  │ ││ │  _│ │  ╲ ╲_  │ ││ │    _│ │_     │ │
+                │ │  │_______╱   │ ││ │ │_________│  │ ││ │ │____│ │___│ │ ││ │   │_____│    │ │
+                │ │              │ ││ │              │ ││ │              │ ││ │              │ │
+                │ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │
+                 '────────────────'  '────────────────'  '────────────────'  '────────────────'
+                """;
+        String welcomeMessage = "\tHello! I'm BERT - Bot for Echo, Response and Talk" +
+                "\n\tHere are the following commands:";
         String commandMessage = """
                 \n\t-todo <item>
                 \t-deadline <item> /by <date>
@@ -114,107 +119,106 @@ public class Bert {
         println(logo + welcomeMessage+commandMessage);
     }
 
-    private static void markTask(String line, Task[] tasks) throws MarkUnmarkNumberError, MarkUnmarkItemError {
+    private static void markTask(String line)
+            throws MarkUnmarkNumberError, MarkUnmarkItemError {
         int markWordSize = "mark".length();
-        String cleanLine = cleanFrontSpacing(line);
+        String cleanLine = cleanFrontSpacing(line).trim();
         if(cleanLine.length() <=markWordSize){
             throw new MarkUnmarkNumberError();
         }
         String markNumber = cleanLine.substring(markWordSize).trim();
         int taskNumToMark = Integer.parseInt(markNumber) - 1;
-        if(taskNumToMark >= taskIndex){
+        if(taskNumToMark >= taskAL.size()|| taskNumToMark < 0){
             throw new MarkUnmarkItemError();
         }
-        tasks[taskNumToMark].markAsDone();
+        Task taskToMarkDone =taskAL.get(taskNumToMark);
+        taskToMarkDone.markAsDone();
         println("\tNice! I've marked this task as done:");
-        println("\t" + tasks[taskNumToMark]);
+        println("\t\t" + taskToMarkDone);
     }
-
-    private static void unmarkTask(String line, Task[] tasks) throws MarkUnmarkNumberError, MarkUnmarkItemError {
+    private static void unmarkTask(String line)
+            throws MarkUnmarkNumberError, MarkUnmarkItemError {
         int unmarkWordSize = "unmark".length();
-        String cleanLine = cleanFrontSpacing(line);
+        String cleanLine = cleanFrontSpacing(line).trim();
         if(cleanLine.length() <=unmarkWordSize){
             throw new MarkUnmarkNumberError();
         }
         String unmarkNumber = cleanLine.substring(unmarkWordSize).trim();
         int taskNumToUnmark = Integer.parseInt(unmarkNumber) - 1;
-        if(taskNumToUnmark >= taskIndex){
+        if(taskNumToUnmark >= taskAL.size()  || taskNumToUnmark < 0){
             throw new MarkUnmarkItemError();
         }
-        tasks[taskNumToUnmark].unmarkAsDone();
+        Task taskToUnnarkDone = taskAL.get(taskNumToUnmark);
+        taskToUnnarkDone.unmarkAsDone();
         println("\tOk, I've unmarked this task:");
-        println("\t" + tasks[taskNumToUnmark]);
+        println("\t\t" + taskToUnnarkDone);
     }
-
-    private static void listTasks(int taskIndex, Task[] tasks) {
+    private static void listTasks() {
         println("\tHere are the tasks in your list:");
-        for(int i = 1; i < taskIndex + 1; ++i) {
-            println("\t" + i + ". " + tasks[i - 1]);
+        for(Task task : taskAL) {
+            int printIndex = taskAL.indexOf(task)+1;
+            println("\t\t" + printIndex + ". " + task);
         }
     }
 
-    public static void addTask(String line, Task[] tasks) {
+    private static void addTask(String line) {
         String taskType = commandCheck(line);
         String cleanLine = cleanFrontSpacing(line);
         switch (taskType) {
             case "todo":
                 try{
-                    addTodo(tasks, taskIndex, cleanLine);
-                    ++taskIndex;
-                    successfulAddMessage(tasks);
+                    addTodo(cleanLine);
+                    successfulAddMessage();
                 } catch(TodoItemError e){
-                    println("ERROR: Empty item in ToDo");
+                    println("\tERROR(Todo): Empty item in ToDo");
                 }
                 break;
             case "deadline":
                 try
                 {
-                    addDeadline(tasks, taskIndex, cleanLine);
-                    ++taskIndex;
-                    successfulAddMessage(tasks);
+                    addDeadline(cleanLine);
+                    successfulAddMessage();
                 } catch (DeadlineItemError e){
-                    println("ERROR: Empty item in Deadline");
+                    println("\tERROR(Deadline): Empty item in Deadline");
                 } catch (DeadlineDateError e){
-                    println("ERROR: Empty date in Deadline");
+                    println("\tDeadline): Empty date in Deadline");
                 }
                 break;
             case "event":
                 try{
-                    addEvent(tasks, taskIndex, cleanLine);
-                    ++taskIndex;
-                    successfulAddMessage(tasks);
+                    addEvent(cleanLine);
+                    successfulAddMessage();
                 } catch(EventItemError e){
-                    println("ERROR: Empty item in Event");
+                    println("\tERROR(Event): Empty item in Event");
                 } catch(EventDateError e){
-                    println("ERROR: Empty date in Event");
+                    println("\tERROR(Event): Empty date in Event");
                 }
                 break;
         }
     }
-
-    private static void successfulAddMessage(Task[] tasks) {
-        println("\tGot it. I've added this task:\n\t\t" + tasks[taskIndex-1]);
-        println("\tNow you have " + taskIndex + " tasks in the list.");
+    private static void successfulAddMessage() {
+        println("\tGot it. I've added this task:\n\t\t" + taskAL.get(taskAL.size()-1));
+        println("\tNow you have " + taskAL.size() + " tasks in the list.");
     }
 
-    private static void addTodo(Task[] tasks, int taskIndex, String cleanLine) throws TodoItemError {
+    private static void addTodo(String cleanLine)
+            throws TodoItemError {
         String item = cleanLine.substring(4).trim();
         if(item.isEmpty()) {
             throw new TodoItemError();
         }
-        tasks[taskIndex] = new Todo(item);
+        taskAL.add(new Todo(item));
     }
 
-    private static void addDeadline(Task[] tasks, int taskIndex, String cleanLine)
+    private static void addDeadline(String cleanLine)
             throws DeadlineItemError, DeadlineDateError {
         int commmandLength = "deadline".length();
         deadlineExceptionCheck(cleanLine, commmandLength);
         int dividerPosition = cleanLine.indexOf("/by");
         String deadlineDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
         String deadline = cleanLine.substring(dividerPosition + 3).trim();
-        tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
+        taskAL.add(new Deadline(deadlineDescription,deadline));
     }
-
     private static void deadlineExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck =cleanLine.substring(commandLength).trim();
         if(itemCheck.isEmpty()) {
@@ -233,7 +237,7 @@ public class Bert {
         }
     }
 
-    private static void addEvent(Task[] tasks, int taskIndex, String cleanLine)
+    private static void addEvent(String cleanLine)
             throws EventItemError,EventDateError {
         int commmandLength = "event".length();
         eventExceptionCheck(cleanLine, commmandLength);
@@ -242,9 +246,8 @@ public class Bert {
         String eventDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
         String startTime = cleanLine.substring(dividerPosition + commmandLength, secondDividerPosition).trim();
         String endTime = cleanLine.substring(secondDividerPosition+3).trim();
-        tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
+        taskAL.add(new Event(eventDescription, startTime, endTime));
     }
-
     private static void eventExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
         if(itemCheck.isEmpty()) {
@@ -270,23 +273,42 @@ public class Bert {
     public static void print(String line) {
         System.out.print(line);
     }
-    public static void pt(String test)
-    {
+    public static void pt(String test) {
         System.out.println("XX"+test+"XX");
     }
 
-    private static void writeToFile() throws FileNotFoundException, IOException {
-        String filePath = "./docs/testWrite.txt";
+    private static void writeToFile() throws IOException {
+        String filePath = "./docs/temp.txt";
         File f = new File(filePath); //create file obj
         f.createNewFile(); //create file in directory
         System.out.println("full path: " + f.getAbsolutePath());
         System.out.println("file exists?: " + f.exists());
         FileWriter fw = new FileWriter(filePath);
-        for(int i=0;i<taskIndex;i++)
+        for(Task task : taskAL)
         {
-            fw.write(tasks[i].toString());
+            fw.write(task.toString());
+            fw.write(System.lineSeparator());
         }
-        fw.write("Hello World");
         fw.close();
+    }
+    private static void readFromFile() throws IOException {
+        String filePath = "./docs/temp.txt";
+
+        File f = new File(filePath); // create a File for the given file path
+        if (f.createNewFile()) {           // Try to create the file
+            System.out.println("File created: " + f.getName());
+        } else {
+            System.out.println("File already exists.");
+        }
+        Scanner s = new Scanner(f); // create a Scanner using the File as the source
+        while (s.hasNext()) {
+            String line = s.nextLine();
+            String taskType = line.substring(1,2);
+            pt(taskType);
+
+
+
+            //System.out.println(s.nextLine());
+        }
     }
 }
