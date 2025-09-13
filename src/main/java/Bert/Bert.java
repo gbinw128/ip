@@ -1,19 +1,23 @@
 package Bert;
 
 import exceptions.*;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Bert {
 
     private static int taskIndex;
+    private static Task[] tasks = new Task[100];
 
     public static void main(String[] args) {
         String goodbyeMessage = "\tBye. Hope to see you again soon!";
         welcomeMenu();
 
         Scanner in = new Scanner(System.in);
-        Task[] tasks = new Task[100];
+        //Task[] tasks = new Task[100];
         taskIndex = 0;
         while(true){
             String line = in.nextLine();
@@ -21,6 +25,13 @@ public class Bert {
             switch (command){
                 case "bye":
                     println(goodbyeMessage);
+                    try{
+                        writeToFile();
+                    } catch(FileNotFoundException  e){
+                        println("File: smth wrong");
+                    } catch(IOException  e){
+                        println("IO: smth wrong");
+                    }
                     return;
                 case "mark":
                     try{
@@ -262,5 +273,20 @@ public class Bert {
     public static void pt(String test)
     {
         System.out.println("XX"+test+"XX");
+    }
+
+    private static void writeToFile() throws FileNotFoundException, IOException {
+        String filePath = "./docs/testWrite.txt";
+        File f = new File(filePath); //create file obj
+        f.createNewFile(); //create file in directory
+        System.out.println("full path: " + f.getAbsolutePath());
+        System.out.println("file exists?: " + f.exists());
+        FileWriter fw = new FileWriter(filePath);
+        for(int i=0;i<taskIndex;i++)
+        {
+            fw.write(tasks[i].toString());
+        }
+        fw.write("Hello World");
+        fw.close();
     }
 }
