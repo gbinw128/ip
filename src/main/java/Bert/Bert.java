@@ -52,6 +52,7 @@ public class Bert {
                     break;
                 case "delete":
                     deleteTask(line, tasks);
+                    break;
                 default:
                     println("Invalid command");
                     break;
@@ -80,6 +81,8 @@ public class Bert {
             return "deadline";
         }else if(appendedLine.startsWith("event")) {
             return "event";
+        }else if(appendedLine.startsWith("delete")) {
+            return "delete";
         }
         return "";
     }
@@ -141,8 +144,9 @@ public class Bert {
     }
     private static void listTasks(Task[] tasks) {
         println("\tHere are the tasks in your list:");
-        for(int i = 1; i < taskIndex + 1; ++i) {
-            println("\t" + i + ". " + tasks[i - 1]);
+        for(Task task : taskAL) {
+            int printIndex = taskAL.indexOf(task)+1;
+            println("\t" + printIndex + ". " + task);
         }
     }
     private static void deleteTask(String line, Task[] tasks) {
@@ -221,6 +225,7 @@ public class Bert {
         String deadlineDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
         String deadline = cleanLine.substring(dividerPosition + 3).trim();
         tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
+        taskAL.add(tasks[taskIndex]);
     }
     private static void deadlineExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck =cleanLine.substring(commandLength).trim();
@@ -250,6 +255,7 @@ public class Bert {
         String startTime = cleanLine.substring(dividerPosition + commmandLength, secondDividerPosition).trim();
         String endTime = cleanLine.substring(secondDividerPosition+3).trim();
         tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
+        taskAL.add(tasks[taskIndex]);
     }
     private static void eventExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
