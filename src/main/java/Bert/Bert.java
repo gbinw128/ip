@@ -27,18 +27,18 @@ public class Bert {
                     try{
                         markTask(line);
                     } catch (MarkUnmarkNumberError e) {
-                        println("ERROR(Mark): Number Missing");
+                        println("\tERROR(Mark): Number Missing");
                     } catch (MarkUnmarkItemError e) {
-                        println("ERROR(Mark): Item does not exist");
+                        println("\tERROR(Mark): Item does not exist");
                     }
                     break;
                 case "unmark":
                     try{
                         unmarkTask(line);
                     } catch (MarkUnmarkNumberError e) {
-                        println("ERROR(Unmark): Number Missing");
+                        println("\tERROR(Unmark): Number Missing");
                     } catch (MarkUnmarkItemError e) {
-                        println("ERROR(Unmark): Item does not exist");
+                        println("\tERROR(Unmark): Item does not exist");
                     }
                     break;
                 case "list":
@@ -53,13 +53,13 @@ public class Bert {
                     try{
                         deleteTask(line);
                     } catch (DeleteNumberError e){
-                        println("ERROR(Delete): Number Missing");
+                        println("\tERROR(Delete): Number Missing");
                     } catch (DeleteItemError e){
-                        println("ERROR(Delete): Item does not exist");
+                        println("\tERROR(Delete): Item does not exist");
                     }
                     break;
                 default:
-                    println("Invalid command");
+                    println("\tERROR: Invalid command");
                     break;
             }
         }
@@ -131,7 +131,7 @@ public class Bert {
         Task taskToMarkDone =taskAL.get(taskNumToMark);
         taskToMarkDone.markAsDone();
         println("\tNice! I've marked this task as done:");
-        println("\t" + taskToMarkDone);
+        println("\t\t" + taskToMarkDone);
     }
     private static void unmarkTask(String line)
             throws MarkUnmarkNumberError, MarkUnmarkItemError {
@@ -148,13 +148,13 @@ public class Bert {
         Task taskToUnnarkDone = taskAL.get(taskNumToUnmark);
         taskToUnnarkDone.unmarkAsDone();
         println("\tOk, I've unmarked this task:");
-        println("\t" + taskToUnnarkDone);
+        println("\t\t" + taskToUnnarkDone);
     }
     private static void listTasks() {
         println("\tHere are the tasks in your list:");
         for(Task task : taskAL) {
             int printIndex = taskAL.indexOf(task)+1;
-            println("\t" + printIndex + ". " + task);
+            println("\t\t" + printIndex + ". " + task);
         }
     }
     private static void deleteTask(String line) {
@@ -169,7 +169,7 @@ public class Bert {
             throw new DeleteItemError();
         }
         println("\tUnderstood, I've Deleted this task:");
-        println("\t" + taskAL.get(taskNumToDelete));
+        println("\t\t" + taskAL.get(taskNumToDelete));
         taskAL.remove(taskNumToDelete);
     }
 
@@ -183,7 +183,7 @@ public class Bert {
                     ++taskIndex;
                     successfulAddMessage();
                 } catch(TodoItemError e){
-                    println("ERROR(Todo): Empty item in ToDo");
+                    println("\tERROR(Todo): Empty item in ToDo");
                 }
                 break;
             case "deadline":
@@ -193,9 +193,9 @@ public class Bert {
                     ++taskIndex;
                     successfulAddMessage();
                 } catch (DeadlineItemError e){
-                    println("ERROR(Deadline): Empty item in Deadline");
+                    println("\tERROR(Deadline): Empty item in Deadline");
                 } catch (DeadlineDateError e){
-                    println("ERROR(Deadline): Empty date in Deadline");
+                    println("\tDeadline): Empty date in Deadline");
                 }
                 break;
             case "event":
@@ -204,9 +204,9 @@ public class Bert {
                     ++taskIndex;
                     successfulAddMessage();
                 } catch(EventItemError e){
-                    println("ERROR(Event): Empty item in Event");
+                    println("\tERROR(Event): Empty item in Event");
                 } catch(EventDateError e){
-                    println("ERROR(Event): Empty date in Event");
+                    println("\tERROR(Event): Empty date in Event");
                 }
                 break;
         }
