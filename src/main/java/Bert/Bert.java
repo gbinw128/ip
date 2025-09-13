@@ -6,16 +6,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Bert {
-
-    private static int taskIndex;
-
+    
     private static ArrayList<Task> taskAL = new ArrayList<Task>();
     public static void main(String[] args) {
         String goodbyeMessage = "\tBye. Hope to see you again soon!";
         welcomeMenu();
 
         Scanner in = new Scanner(System.in);
-        taskIndex = 0;
         while(true){
             String line = in.nextLine();
             String command = commandCheck(line);
@@ -92,17 +89,19 @@ public class Bert {
         return "";
     }
     private static void welcomeMenu(){
-        String logo= " .────────────────.  .────────────────.  .────────────────.  .────────────────.\n" +
-                "│ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │\n" +
-                "│ │   ______     │ ││ │  _________   │ ││ │  _______     │ ││ │  _________   │ │\n" +
-                "│ │  │_   _ ╲    │ ││ │ │_   ___  │  │ ││ │ │_   __ ╲    │ ││ │ │  _   _  │  │ │\n" +
-                "│ │    │ │_) │   │ ││ │   │ │_  ╲_│  │ ││ │   │ │__) │   │ ││ │ │_╱ │ │ ╲_│  │ │\n" +
-                "│ │    │  __'.   │ ││ │   │  _│  _   │ ││ │   │  __ ╱    │ ││ │     │ │      │ │\n" +
-                "│ │   _│ │__) │  │ ││ │  _│ │___╱ │  │ ││ │  _│ │  ╲ ╲_  │ ││ │    _│ │_     │ │\n" +
-                "│ │  │_______╱   │ ││ │ │_________│  │ ││ │ │____│ │___│ │ ││ │   │_____│    │ │\n" +
-                "│ │              │ ││ │              │ ││ │              │ ││ │              │ │\n" +
-                "│ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │\n" +
-                " '────────────────'  '────────────────'  '────────────────'  '────────────────'\n";
+        String logo= """
+                 .────────────────.  .────────────────.  .────────────────.  .────────────────.
+                │ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │
+                │ │   ______     │ ││ │  _________   │ ││ │  _______     │ ││ │  _________   │ │
+                │ │  │_   _ ╲    │ ││ │ │_   ___  │  │ ││ │ │_   __ ╲    │ ││ │ │  _   _  │  │ │
+                │ │    │ │_) │   │ ││ │   │ │_  ╲_│  │ ││ │   │ │__) │   │ ││ │ │_╱ │ │ ╲_│  │ │
+                │ │    │  __'.   │ ││ │   │  _│  _   │ ││ │   │  __ ╱    │ ││ │     │ │      │ │
+                │ │   _│ │__) │  │ ││ │  _│ │___╱ │  │ ││ │  _│ │  ╲ ╲_  │ ││ │    _│ │_     │ │
+                │ │  │_______╱   │ ││ │ │_________│  │ ││ │ │____│ │___│ │ ││ │   │_____│    │ │
+                │ │              │ ││ │              │ ││ │              │ ││ │              │ │
+                │ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │
+                 '────────────────'  '────────────────'  '────────────────'  '────────────────'
+                """;
         String welcomeMessage = "\tHello! I'm BERT - Bot for Echo, Response and Talk" +
                 "\n\tHere are the following commands:";
         String commandMessage = """
@@ -125,7 +124,7 @@ public class Bert {
         }
         String markNumber = cleanLine.substring(markWordSize).trim();
         int taskNumToMark = Integer.parseInt(markNumber) - 1;
-        if(taskNumToMark >= taskIndex || taskNumToMark < 0){
+        if(taskNumToMark >= taskAL.size()|| taskNumToMark < 0){
             throw new MarkUnmarkItemError();
         }
         Task taskToMarkDone =taskAL.get(taskNumToMark);
@@ -142,7 +141,7 @@ public class Bert {
         }
         String unmarkNumber = cleanLine.substring(unmarkWordSize).trim();
         int taskNumToUnmark = Integer.parseInt(unmarkNumber) - 1;
-        if(taskNumToUnmark >= taskIndex  || taskNumToUnmark < 0){
+        if(taskNumToUnmark >= taskAL.size()  || taskNumToUnmark < 0){
             throw new MarkUnmarkItemError();
         }
         Task taskToUnnarkDone = taskAL.get(taskNumToUnmark);
@@ -165,7 +164,7 @@ public class Bert {
         }
         String deleteNumber = cleanLine.substring(deleteWordSize).trim();
         int taskNumToDelete = Integer.parseInt(deleteNumber) - 1;
-        if(taskNumToDelete >= taskIndex || taskNumToDelete < 0){
+        if(taskNumToDelete >= taskAL.size() || taskNumToDelete < 0){
             throw new DeleteItemError();
         }
         println("\tUnderstood, I've Deleted this task:");
@@ -180,7 +179,6 @@ public class Bert {
             case "todo":
                 try{
                     addTodo(cleanLine);
-                    ++taskIndex;
                     successfulAddMessage();
                 } catch(TodoItemError e){
                     println("\tERROR(Todo): Empty item in ToDo");
@@ -190,7 +188,6 @@ public class Bert {
                 try
                 {
                     addDeadline(cleanLine);
-                    ++taskIndex;
                     successfulAddMessage();
                 } catch (DeadlineItemError e){
                     println("\tERROR(Deadline): Empty item in Deadline");
@@ -201,7 +198,6 @@ public class Bert {
             case "event":
                 try{
                     addEvent(cleanLine);
-                    ++taskIndex;
                     successfulAddMessage();
                 } catch(EventItemError e){
                     println("\tERROR(Event): Empty item in Event");
@@ -213,7 +209,7 @@ public class Bert {
     }
     private static void successfulAddMessage() {
         println("\tGot it. I've added this task:\n\t\t" + taskAL.get(taskAL.size()-1));
-        println("\tNow you have " + taskIndex + " tasks in the list.");
+        println("\tNow you have " + taskAL.size() + " tasks in the list.");
     }
 
     private static void addTodo(String cleanLine)
