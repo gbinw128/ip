@@ -92,7 +92,7 @@ public class Bert {
         return "";
     }
     private static void welcomeMenu(){
-        String logo= " .────────────────.  .────────────────.  .────────────────.  .────────────────. \n" +
+        String logo= " .────────────────.  .────────────────.  .────────────────.  .────────────────.\n" +
                 "│ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │\n" +
                 "│ │   ______     │ ││ │  _________   │ ││ │  _______     │ ││ │  _________   │ │\n" +
                 "│ │  │_   _ ╲    │ ││ │ │_   ___  │  │ ││ │ │_   __ ╲    │ ││ │ │  _   _  │  │ │\n" +
@@ -103,7 +103,8 @@ public class Bert {
                 "│ │              │ ││ │              │ ││ │              │ ││ │              │ │\n" +
                 "│ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │\n" +
                 " '────────────────'  '────────────────'  '────────────────'  '────────────────'\n";
-        String welcomeMessage = "\tHello! I'm BERT - Bot for Echo, Response and Talk \n\tHere are the following commands:";
+        String welcomeMessage = "\tHello! I'm BERT - Bot for Echo, Response and Talk" +
+                "\n\tHere are the following commands:";
         String commandMessage = """
                 \n\t-todo <item>
                 \t-deadline <item> /by <date>
@@ -182,7 +183,7 @@ public class Bert {
                     ++taskIndex;
                     successfulAddMessage();
                 } catch(TodoItemError e){
-                    println("ERROR: Empty item in ToDo");
+                    println("ERROR(Todo): Empty item in ToDo");
                 }
                 break;
             case "deadline":
@@ -192,9 +193,9 @@ public class Bert {
                     ++taskIndex;
                     successfulAddMessage();
                 } catch (DeadlineItemError e){
-                    println("ERROR: Empty item in Deadline");
+                    println("ERROR(Deadline): Empty item in Deadline");
                 } catch (DeadlineDateError e){
-                    println("ERROR: Empty date in Deadline");
+                    println("ERROR(Deadline): Empty date in Deadline");
                 }
                 break;
             case "event":
@@ -203,9 +204,9 @@ public class Bert {
                     ++taskIndex;
                     successfulAddMessage();
                 } catch(EventItemError e){
-                    println("ERROR: Empty item in Event");
+                    println("ERROR(Event): Empty item in Event");
                 } catch(EventDateError e){
-                    println("ERROR: Empty date in Event");
+                    println("ERROR(Event): Empty date in Event");
                 }
                 break;
         }
