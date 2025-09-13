@@ -119,7 +119,7 @@ public class Bert {
         }
         String markNumber = cleanLine.substring(markWordSize).trim();
         int taskNumToMark = Integer.parseInt(markNumber) - 1;
-        if(taskNumToMark >= taskIndex){
+        if(taskNumToMark >= taskIndex || taskNumToMark < 0){
             throw new MarkUnmarkItemError();
         }
         tasks[taskNumToMark].markAsDone();
@@ -135,7 +135,7 @@ public class Bert {
         }
         String unmarkNumber = cleanLine.substring(unmarkWordSize).trim();
         int taskNumToUnmark = Integer.parseInt(unmarkNumber) - 1;
-        if(taskNumToUnmark >= taskIndex){
+        if(taskNumToUnmark >= taskIndex  || taskNumToUnmark < 0){
             throw new MarkUnmarkItemError();
         }
         tasks[taskNumToUnmark].unmarkAsDone();
