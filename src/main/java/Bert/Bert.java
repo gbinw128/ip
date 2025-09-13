@@ -78,7 +78,6 @@ public class Bert {
         }
         return "";
     }
-
     private static void welcomeMenu(){
         String logo= " .────────────────.  .────────────────.  .────────────────.  .────────────────. \n" +
                 "│ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │\n" +
@@ -103,7 +102,8 @@ public class Bert {
         println(logo + welcomeMessage+commandMessage);
     }
 
-    private static void markTask(String line, Task[] tasks) throws MarkUnmarkNumberError, MarkUnmarkItemError {
+    private static void markTask(String line, Task[] tasks)
+            throws MarkUnmarkNumberError, MarkUnmarkItemError {
         int markWordSize = "mark".length();
         String cleanLine = cleanFrontSpacing(line);
         if(cleanLine.length() <=markWordSize){
@@ -118,8 +118,8 @@ public class Bert {
         println("\tNice! I've marked this task as done:");
         println("\t" + tasks[taskNumToMark]);
     }
-
-    private static void unmarkTask(String line, Task[] tasks) throws MarkUnmarkNumberError, MarkUnmarkItemError {
+    private static void unmarkTask(String line, Task[] tasks)
+            throws MarkUnmarkNumberError, MarkUnmarkItemError {
         int unmarkWordSize = "unmark".length();
         String cleanLine = cleanFrontSpacing(line);
         if(cleanLine.length() <=unmarkWordSize){
@@ -134,7 +134,6 @@ public class Bert {
         println("\tOk, I've unmarked this task:");
         println("\t" + tasks[taskNumToUnmark]);
     }
-
     private static void listTasks(int taskIndex, Task[] tasks) {
         println("\tHere are the tasks in your list:");
         for(int i = 1; i < taskIndex + 1; ++i) {
@@ -180,13 +179,13 @@ public class Bert {
                 break;
         }
     }
-
     private static void successfulAddMessage(Task[] tasks) {
         println("\tGot it. I've added this task:\n\t\t" + tasks[taskIndex-1]);
         println("\tNow you have " + taskIndex + " tasks in the list.");
     }
 
-    private static void addTodo(Task[] tasks, int taskIndex, String cleanLine) throws TodoItemError {
+    private static void addTodo(Task[] tasks, int taskIndex, String cleanLine)
+            throws TodoItemError {
         String item = cleanLine.substring(4).trim();
         if(item.isEmpty()) {
             throw new TodoItemError();
@@ -203,7 +202,6 @@ public class Bert {
         String deadline = cleanLine.substring(dividerPosition + 3).trim();
         tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
     }
-
     private static void deadlineExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck =cleanLine.substring(commandLength).trim();
         if(itemCheck.isEmpty()) {
@@ -233,7 +231,6 @@ public class Bert {
         String endTime = cleanLine.substring(secondDividerPosition+3).trim();
         tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
     }
-
     private static void eventExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
         if(itemCheck.isEmpty()) {
