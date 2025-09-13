@@ -196,43 +196,61 @@ public class Bert {
 
     private static void addDeadline(Task[] tasks, int taskIndex, String cleanLine)
             throws DeadlineItemError, DeadlineDateError {
-        String itemCheck =cleanLine.substring(8,cleanLine.indexOf("/by")).trim();
+        int commmandLength = "deadline".length();
+        deadlineExceptionCheck(cleanLine, commmandLength);
+        int dividerPosition = cleanLine.indexOf("/by");
+        String deadlineDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
+        String deadline = cleanLine.substring(dividerPosition + 3).trim();
+        tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
+    }
+
+    private static void deadlineExceptionCheck(String cleanLine, int commandLength) {
+        String itemCheck =cleanLine.substring(commandLength).trim();
         if(itemCheck.isEmpty()) {
             throw new DeadlineItemError();
         }
         if(!cleanLine.contains("/by")){
             throw new DeadlineDateError();
         }
-        String dateCheck =cleanLine.substring(cleanLine.indexOf("/by")).trim();
+        itemCheck = cleanLine.substring(commandLength, cleanLine.indexOf("/by")).trim();
+        if(itemCheck.isEmpty()) {
+            throw new DeadlineItemError();
+        }
+        String dateCheck = cleanLine.substring(cleanLine.indexOf("/by")).trim();
         if(dateCheck.length()<=3){
             throw new DeadlineDateError();
         }
-        int dividerPosition = cleanLine.indexOf("/by");
-        String deadlineDescription = cleanLine.substring(8, dividerPosition).trim();
-        String deadline = cleanLine.substring(dividerPosition + 3).trim();
-        tasks[taskIndex] = new Deadline(deadlineDescription,deadline);
     }
 
     private static void addEvent(Task[] tasks, int taskIndex, String cleanLine)
             throws EventItemError,EventDateError {
-        String itemCheck =cleanLine.substring(5,cleanLine.indexOf("/from")).trim();
+        int commmandLength = "event".length();
+        eventExceptionCheck(cleanLine, commmandLength);
+        int dividerPosition = cleanLine.indexOf("/from");
+        int secondDividerPosition = cleanLine.indexOf("/to",dividerPosition+1);
+        String eventDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
+        String startTime = cleanLine.substring(dividerPosition + commmandLength, secondDividerPosition).trim();
+        String endTime = cleanLine.substring(secondDividerPosition+3).trim();
+        tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
+    }
+
+    private static void eventExceptionCheck(String cleanLine, int commandLength) {
+        String itemCheck = cleanLine.substring(commandLength).trim();
         if(itemCheck.isEmpty()) {
             throw new EventItemError();
         }
         if(!cleanLine.contains("/from") || !cleanLine.contains("/to")){
             throw new EventDateError();
         }
-        String from_DateCheck =cleanLine.substring(cleanLine.indexOf("/from"),cleanLine.indexOf("/to")).trim();
-        String to_DateCheck =cleanLine.substring(cleanLine.indexOf("/to")).trim();
+        itemCheck = cleanLine.substring(commandLength, cleanLine.indexOf("/from")).trim();
+        if(itemCheck.isEmpty()) {
+            throw new EventItemError();
+        }
+        String from_DateCheck = cleanLine.substring(cleanLine.indexOf("/from"), cleanLine.indexOf("/to")).trim();
+        String to_DateCheck = cleanLine.substring(cleanLine.indexOf("/to")).trim();
         if(from_DateCheck.length()<=5 ||  to_DateCheck.length()<=3){
             throw new EventDateError();
         }
-        int dividerPosition = cleanLine.indexOf("/from");
-        int secondDividerPosition = cleanLine.indexOf("/to",dividerPosition+1);
-        String eventDescription = cleanLine.substring(5, dividerPosition).trim();
-        String startTime = cleanLine.substring(dividerPosition + 5, secondDividerPosition).trim();
-        String endTime = cleanLine.substring(secondDividerPosition+3).trim();
-        tasks[taskIndex] = new Event(eventDescription, startTime, endTime);
     }
 
     public static void println(String line) {
