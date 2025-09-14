@@ -1,4 +1,25 @@
+
+todo
 todo homework
-deadline return library book /next week
-event holiday /tdy /next month
+todo reading
+todo cycling
+mark 0
+unmark 0
+deadline
+deadline /by
+deadline /by tmw
+deadline return book /by
+deadline return book /by tmw
+event
+event holiday /from tdy /to next month
+event holiday /from tdy /to
+event holiday /from /to next month
+event /from tdy /to next month
+list
+delete 0
+delete 1
+list
+mark 1
+list
+unmark 1
 list

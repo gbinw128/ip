@@ -1,4 +1,4 @@
- .────────────────.  .────────────────.  .────────────────.  .────────────────. 
+ .────────────────.  .────────────────.  .────────────────.  .────────────────.
 │ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │
 │ │   ______     │ ││ │  _________   │ ││ │  _______     │ ││ │  _________   │ │
 │ │  │_   _ ╲    │ ││ │ │_   ___  │  │ ││ │ │_   __ ╲    │ ││ │ │  _   _  │  │ │
@@ -9,12 +9,67 @@
 │ │              │ ││ │              │ ││ │              │ ││ │              │ │
 │ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │
  '────────────────'  '────────────────'  '────────────────'  '────────────────'
-	 Hello! I'm BERT - Bot for Echo, Response and Talk
-	 What can I do for you?
-	added homework as todo type
-	added return library book /next week as deadline type
-	added holiday /tdy /next month as event type
+	Hello! I'm BERT - Bot for Echo, Response and Talk
+	Here are the following commands:
+	-todo <item>
+	-deadline <item> /by <date>
+	-event <item> /from <date> /to <date>
+	-mark <itemNumber>
+	-unmark <itemNumber>
+	-list
+	-bye
+	ERROR: Invalid command
+	ERROR(Todo): Empty item in ToDo
+	Got it. I've added this task:
+		[T][ ] homework
+	Now you have 1 tasks in the list.
+	Got it. I've added this task:
+		[T][ ] reading
+	Now you have 2 tasks in the list.
+	Got it. I've added this task:
+		[T][ ] cycling
+	Now you have 3 tasks in the list.
+	ERROR(Mark): Item does not exist
+	ERROR(Unmark): Item does not exist
+	ERROR(Deadline): Empty item in Deadline
+	ERROR(Deadline): Empty item in Deadline
+	ERROR(Deadline): Empty item in Deadline
+	Deadline): Empty date in Deadline
+	Got it. I've added this task:
+		[D][ ] return book (by: tmw)
+	Now you have 4 tasks in the list.
+	ERROR(Event): Empty item in Event
+	Got it. I've added this task:
+		[E][ ] holiday (From:tdy --> To:next month)
+	Now you have 5 tasks in the list.
+	ERROR(Event): Empty date in Event
+	ERROR(Event): Empty date in Event
+	ERROR(Event): Empty item in Event
 	Here are the tasks in your list:
-	1. [T][ ] homework
-	2. [D][ ] return library book (by: next week)
-	3. [E][ ] holiday (From:tdy --> To:next month)
+		1. [T][ ] homework
+		2. [T][ ] reading
+		3. [T][ ] cycling
+		4. [D][ ] return book (by: tmw)
+		5. [E][ ] holiday (From:tdy --> To:next month)
+	ERROR(Delete): Item does not exist
+	Understood, I've Deleted this task:
+		[T][ ] homework
+	Here are the tasks in your list:
+		1. [T][ ] reading
+		2. [T][ ] cycling
+		3. [D][ ] return book (by: tmw)
+		4. [E][ ] holiday (From:tdy --> To:next month)
+	Nice! I've marked this task as done:
+		[T][X] reading
+	Here are the tasks in your list:
+		1. [T][X] reading
+		2. [T][ ] cycling
+		3. [D][ ] return book (by: tmw)
+		4. [E][ ] holiday (From:tdy --> To:next month)
+	Ok, I've unmarked this task:
+		[T][ ] reading
+	Here are the tasks in your list:
+		1. [T][ ] reading
+		2. [T][ ] cycling
+		3. [D][ ] return book (by: tmw)
+		4. [E][ ] holiday (From:tdy --> To:next month)
