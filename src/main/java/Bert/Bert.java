@@ -293,44 +293,43 @@ public class Bert {
     }
     private static void readFromFile() throws IOException {
         String filePath = "./docs/temp.txt";
-
         File f = new File(filePath); // create a File for the given file path
-
         if (f.createNewFile()) {           // Try to create the file
             System.out.println("File created: " + f.getName());
         } else {
-            System.out.println("File already exists.");
+            println("File already exists.");
         }
 
         Scanner s = new Scanner(f); // create a Scanner using the File as the source
+
         while (s.hasNext()) {
-            String line = s.nextLine();
-            String taskType = line.substring(1,2);
-            String description = line.substring(7);
+            initializeFromTempFile(s);
+        }
+        if(!taskAL.isEmpty()){
+            println("Tasks have been initialized.");
+            listTasks();
+        }
+    }
 
-            if(taskType.equalsIgnoreCase("T")){
-                String item = "todo " + description;
-                addTask(item);
-            }
-            else if(taskType.equalsIgnoreCase("D")){
-                String taskName = description.substring(0,description.indexOf("(by:")).trim();
-                String byDate =  description.substring(description.indexOf("(by:")+4).trim();
-                byDate = byDate.replace(")","");
-                String item = "deadline " + taskName + " /by " + byDate;
-                addTask(item);
-            }
-            else if(taskType.equalsIgnoreCase("E")){
-                String taskName = description.substring(0,description.indexOf("(From:")).trim();
-                String fromDate =  description.substring(description.indexOf("(From:")+6,description.indexOf("--")).trim();
-                String toDate =  description.substring(description.indexOf("To:")+3).trim();
-                toDate = toDate.replace(")","");
-                String item = "event "+ taskName + " /from " + fromDate + " /to " + toDate;
-                pt(item);
-                addTask(item);
-            }
+    private static void initializeFromTempFile(Scanner s) {
+        String line = s.nextLine();
+        String taskType = line.substring(1,2);
+        String description = line.substring(7);
 
-
-            //System.out.println(s.nextLine());
+        if(taskType.equalsIgnoreCase("T")){
+            taskAL.add(new Todo(description));
+        }
+        else if(taskType.equalsIgnoreCase("D")){
+            String taskName = description.substring(0,description.indexOf("(by:")).trim();
+            String byDate =  description.substring(description.indexOf("(by:")+4).trim();
+            byDate = byDate.replace(")","");
+            taskAL.add(new Deadline(taskName, byDate));
+        } else if(taskType.equalsIgnoreCase("E")){
+            String taskName = description.substring(0,description.indexOf("(From:")).trim();
+            String fromTime =  description.substring(description.indexOf("(From:")+6,description.indexOf("--")).trim();
+            String toTime =  description.substring(description.indexOf("To:")+3).trim();
+            toTime = toTime.replace(")","");
+            taskAL.add(new Event(taskName, fromTime, toTime));
         }
     }
 }
