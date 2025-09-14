@@ -1,0 +1,3 @@
+[T][ ] read
+[D][ ] return (by: tmw)
+[E][ ] goldrush (From:tdy --> To:tmw)

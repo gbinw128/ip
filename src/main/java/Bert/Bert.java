@@ -1,17 +1,23 @@
 package Bert;
 
 import exceptions.*;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Bert {
-    
     private static ArrayList<Task> taskAL = new ArrayList<Task>();
     public static void main(String[] args) {
         String goodbyeMessage = "\tBye. Hope to see you again soon!";
         welcomeMenu();
-
+        try{
+            readFromFile();
+        } catch (IOException e){
+            println("READERROR");
+        }
         Scanner in = new Scanner(System.in);
         while(true){
             String line = in.nextLine();
@@ -19,6 +25,11 @@ public class Bert {
             switch (command){
                 case "bye":
                     println(goodbyeMessage);
+                    try{
+                        writeToFile();
+                    } catch(IOException e){
+                        println("IO: smth wrong");
+                    }
                     return;
                 case "mark":
                     try{
@@ -286,5 +297,61 @@ public class Bert {
     }
     public static void pt(String test) {
         System.out.println("XX"+test+"XX");
+    }
+
+    private static void writeToFile() throws IOException {
+        String filePath = "./docs/temp.txt";
+        File f = new File(filePath); //create file obj
+        f.createNewFile(); //create file in directory
+        System.out.println("full path: " + f.getAbsolutePath());
+        System.out.println("file exists?: " + f.exists());
+        FileWriter fw = new FileWriter(filePath);
+        for(Task task : taskAL)
+        {
+            fw.write(task.toString());
+            fw.write(System.lineSeparator());
+        }
+        fw.close();
+    }
+    private static void readFromFile() throws IOException {
+        String filePath = "./docs/temp.txt";
+        File f = new File(filePath); // create a File for the given file path
+        if (f.createNewFile()) {           // Try to create the file
+            System.out.println("File created: " + f.getName());
+        } else {
+            println("File already exists.");
+        }
+
+        Scanner s = new Scanner(f); // create a Scanner using the File as the source
+
+        while (s.hasNext()) {
+            initializeFromTempFile(s);
+        }
+        if(!taskAL.isEmpty()){
+            println("Tasks have been initialized.");
+            listTasks();
+        }
+    }
+
+    private static void initializeFromTempFile(Scanner s) {
+        String line = s.nextLine();
+        String taskType = line.substring(1,2);
+        String description = line.substring(7);
+
+        if(taskType.equalsIgnoreCase("T")){
+            taskAL.add(new Todo(description));
+        }
+        else if(taskType.equalsIgnoreCase("D")){
+            String taskName = description.substring(0,description.indexOf("(by:")).trim();
+            String byDate =  description.substring(description.indexOf("(by:")+4).trim();
+            byDate = byDate.replace(")","");
+            taskAL.add(new Deadline(taskName, byDate));
+        } else if(taskType.equalsIgnoreCase("E")){
+            String taskName = description.substring(0,description.indexOf("(From:")).trim();
+            String fromTime =  description.substring(description.indexOf("(From:")+6,description.indexOf("--")).trim();
+            String toTime =  description.substring(description.indexOf("To:")+3).trim();
+            toTime = toTime.replace(")","");
+            taskAL.add(new Event(taskName, fromTime, toTime));
+        }
     }
 }
