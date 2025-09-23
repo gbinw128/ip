@@ -314,8 +314,17 @@ public class Bert {
         fw.close();
     }
     private static void readFromFile() throws IOException {
-        String filePath = "./docs/temp.txt";
+        String dirPath = "./StorageData";
+        String filePath = "./StorageData/data.txt";
+        File d =  new File(dirPath);
         File f = new File(filePath); // create a File for the given file path
+        boolean dirCreated = d.mkdir();
+        if(!dirCreated){
+            println("Error: could not create directory or directory exists");
+        }
+        else {
+            println("Directory created");
+        }
         if (f.createNewFile()) {           // Try to create the file
             System.out.println("File created: " + f.getName());
         } else {
