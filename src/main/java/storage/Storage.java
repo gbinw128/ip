@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import Bert.Deadline;
@@ -62,7 +63,8 @@ public class Storage {
             String taskName = description.substring(0,description.indexOf("(by:")).trim();
             String byDate =  description.substring(description.indexOf("(by:")+4).trim();
             byDate = byDate.replace(")","");
-            taskAL.add(new Deadline(taskName, byDate));
+            LocalDate parsedBydate = LocalDate.parse(byDate);
+            taskAL.add(new Deadline(taskName, parsedBydate));
         } else if(taskType.equalsIgnoreCase("E")){
             String taskName = description.substring(0,description.indexOf("(From:")).trim();
             String fromTime =  description.substring(description.indexOf("(From:")+6,description.indexOf("--")).trim();
@@ -92,6 +94,9 @@ public class Storage {
         }
     }
     private static void createDirectory() {
+        if(Files.exists(saveFileDirectoryPath)) {
+            return;
+        }
         try {
             Files.createDirectories(saveFileDirectoryPath.getParent());
             Files.createFile(saveFileDirectoryPath);

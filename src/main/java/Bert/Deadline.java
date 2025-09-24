@@ -1,20 +1,22 @@
 package Bert;
 
-public class Deadline extends Task {
-    protected String dueBy;
+import java.time.LocalDate;
 
-    public Deadline(String description,String dueByDate) {
+public class Deadline extends Task {
+    protected LocalDate dueByDate;
+
+    public Deadline(String description, LocalDate dueByDate) {
         super(description);
-        setBy(dueByDate);
+        setByDate(dueByDate);
     }
 
-    public void setBy(String dueBy)
+    public void setByDate(LocalDate dueByDate)
     {
-        this.dueBy=dueBy;
+        this.dueByDate=dueByDate;
     }
 
     @Override
     public String toString() {
-        return "[D]" +super.toString() + " (by: " +  dueBy + ")";
+        return "[D]" +super.toString() + " (by: " + dueByDate+ ")";
     }
 }

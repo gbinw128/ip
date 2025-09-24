@@ -32,8 +32,8 @@ public class Ui { //deals with interactions with the user
                 "\n\tHere are the following commands:";
         String commandMessage = """
                 \n\t-todo <item>
-                \t-deadline <item> /by <date>
-                \t-event <item> /from <date> /to <date>
+                \t-deadline <item> /by <date (YYYY-MM-DD)>
+                \t-event <item> /from <date (YYYY-MM-DD)> /to <date (YYYY-MM-DD)>
                 \t-mark <itemNumber>
                 \t-unmark <itemNumber>
                 \t-list

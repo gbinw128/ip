@@ -18,6 +18,10 @@ import Bert.Todo;
 import parser.Parser;
 import ui.Ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
+
 import static Bert.Bert.taskAL;
 
 
@@ -113,6 +117,8 @@ public class TaskList {
                     Ui.emptyDeadlineItemExceptionMessage();
                 } catch (DeadlineDateError e) {
                     Ui.emptyDeadlineDateExceptionMessage();
+                } catch (DateTimeParseException e) {
+                    System.out.println("\tInvalid date format (YYYY-MM-DD)");
                 }
                 break;
             case "event":
@@ -138,13 +144,14 @@ public class TaskList {
     }
 
     private static void addDeadline(String cleanLine)
-            throws DeadlineItemError, DeadlineDateError {
+            throws DeadlineItemError, DeadlineDateError, DateTimeParseException {
         int commmandLength = "deadline".length();
         deadlineExceptionCheck(cleanLine, commmandLength);
         int dividerPosition = cleanLine.indexOf("/by");
         String deadlineDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
         String deadline = cleanLine.substring(dividerPosition + 3).trim();
-        taskAL.add(new Deadline(deadlineDescription, deadline));
+        LocalDate deadlineDate = LocalDate.parse(deadline);
+        taskAL.add(new Deadline(deadlineDescription, deadlineDate));
     }
 
     private static void deadlineExceptionCheck(String cleanLine, int commandLength) {
