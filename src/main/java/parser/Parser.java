@@ -1,10 +1,5 @@
 package parser;
 
-import exceptions.DeleteItemError;
-import exceptions.DeleteNumberError;
-import exceptions.MarkUnmarkItemError;
-import exceptions.MarkUnmarkNumberError;
-
 import ui.Ui;
 import tasklist.TaskList;
 
@@ -31,7 +26,7 @@ public class Parser {
                 TaskList.deleteTask(userInput);
                 break;
             default:
-                Ui.invalidCommand();
+                Ui.invalidCommandMessage();
                 break;
         }
     }

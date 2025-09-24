@@ -12,7 +12,6 @@ import ui.Ui;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 
 import static Bert.Bert.taskAL;
 
@@ -110,7 +109,7 @@ public class TaskList {
                 } catch (DeadlineDateError e) {
                     Ui.emptyDeadlineDateExceptionMessage();
                 } catch (DateTimeParseException e) {
-                    System.out.println("\tInvalid date format (YYYY-MM-DD)");
+                    Ui.invalidDateFormatMessage();
                 }
                 break;
             case "event":
@@ -122,9 +121,9 @@ public class TaskList {
                 } catch (EventDateError e) {
                     Ui.emptyEventDateExceptionMessage();
                 } catch (DateTimeParseException e) {
-                    System.out.println("\tInvalid date format (YYYY-MM-DD)");
+                    Ui.invalidDateFormatMessage();
                 }catch (DeadlineTimelineError e) {
-                    System.out.println("\tInvalid Timeline");
+                    Ui.invalidTimelineMessage();
                 }
                 break;
         }

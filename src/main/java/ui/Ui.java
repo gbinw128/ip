@@ -113,11 +113,20 @@ public class Ui { //deals with interactions with the user
     public static void inoperableItemMessage(String commandType) {
         println("\tERROR(" + commandType + "): Item does not exist");
     }
-    public static void invalidCommand() {
+    public static void invalidCommandMessage() {
         println("\tERROR: Invalid command");
+    }
+    public static void invalidDateFormatMessage() {
+        println("\tInvalid date format (YYYY-MM-DD)");
+    }
+    public static void invalidTimelineMessage() {
+        println("\tInvalid Timeline");
     }
 
     public static void IOExceptionErrorMessage() {
         println("IO: something wrong");
     }
+
+
+
 }
