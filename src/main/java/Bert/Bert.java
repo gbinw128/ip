@@ -352,7 +352,7 @@ public class Bert {
         }
     }
 
-    private static void initializeFromTempFile(Scanner s) {
+    private static void parsingFromSaveFile(Scanner s) {
         String line = s.nextLine();
         String taskType = line.substring(1,2);
         String description = line.substring(7);
