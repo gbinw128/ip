@@ -71,8 +71,9 @@ public class Storage {
             String fromTime =  description.substring(description.indexOf("(From:")+6,description.indexOf("--")).trim();
             String toTime =  description.substring(description.indexOf("To:")+3).trim();
             toTime = toTime.replace(")","");
-            LocalDate parsedFromTime = LocalDate.parse(fromTime);
-            LocalDate parsedToTime = LocalDate.parse(toTime);
+
+            LocalDateTime parsedFromTime = LocalDateTime.parse(fromTime);
+            LocalDateTime parsedToTime = LocalDateTime.parse(toTime);
             taskAL.add(new Event(taskName, parsedFromTime, parsedToTime));
         }
     }

@@ -124,7 +124,7 @@ public class TaskList {
                     Ui.emptyEventDateExceptionMessage();
                 } catch (DateTimeParseException e) {
                     Ui.invalidDateFormatMessage();
-                }catch (DeadlineTimelineError e) {
+                }catch (EventTimelineError e) {
                     Ui.invalidTimelineMessage();
                 }
                 break;
@@ -176,21 +176,35 @@ public class TaskList {
         }
     }
 
-    private static void addEvent(String cleanLine)
+    private static void addEvent(String cleanLine) //event tiohatahio /from 2025-10-12 1500 /to 2025-10-13 1500
             throws EventItemError, EventDateError, DateTimeParseException {
         int commmandLength = "event".length();
         eventExceptionCheck(cleanLine, commmandLength);
         int dividerPosition = cleanLine.indexOf("/from");
         int secondDividerPosition = cleanLine.indexOf("/to", dividerPosition + 1);
+
         String eventDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
         String startDate = cleanLine.substring(dividerPosition + commmandLength, secondDividerPosition).trim();
+        String startDateTime = startDate.substring(10).trim();
+
+                startDateTime = addCharToString(startDateTime,':',2);Ui.pt(startDateTime);
+                startDate = startDate.substring(0,10).trim();
         String endDate = cleanLine.substring(secondDividerPosition + 3).trim();
+        String endDateTime = endDate.substring(10).trim();
+                endDateTime = addCharToString(endDateTime,':',2); Ui.pt(startDateTime);
+                endDate = endDate.substring(0,10).trim();
         LocalDate parsedStartDate = LocalDate.parse(startDate);
+        LocalTime parsedStartTime = LocalTime.parse(startDateTime);
         LocalDate parsedEndDate = LocalDate.parse(endDate);
+        LocalTime parsedEndTime = LocalTime.parse(endDateTime);
+        LocalDateTime parsedStartDateTime = LocalDateTime.parse(parsedStartDate+"T"+parsedStartTime);
+        LocalDateTime parsedEndDateTime = LocalDateTime.parse(parsedEndDate+"T"+parsedEndTime);
+
+
         if(parsedStartDate.isAfter(parsedEndDate)) {
-            throw new DeadlineTimelineError();
+            throw new EventTimelineError();
         }
-        taskAL.add(new Event(eventDescription, parsedStartDate, parsedEndDate));
+        taskAL.add(new Event(eventDescription, parsedStartDateTime, parsedEndDateTime));
     }
     private static void eventExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
