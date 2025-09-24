@@ -173,14 +173,14 @@ public class TaskList {
         int dividerPosition = cleanLine.indexOf("/from");
         int secondDividerPosition = cleanLine.indexOf("/to", dividerPosition + 1);
         String eventDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
-        String startTime = cleanLine.substring(dividerPosition + commmandLength, secondDividerPosition).trim();
-        String endTime = cleanLine.substring(secondDividerPosition + 3).trim();
-        LocalDate parsedStartTime = LocalDate.parse(startTime);
-        LocalDate parsedEndTime = LocalDate.parse(endTime);
-        if(parsedStartTime.isAfter(parsedEndTime)) {
+        String startDate = cleanLine.substring(dividerPosition + commmandLength, secondDividerPosition).trim();
+        String endDate = cleanLine.substring(secondDividerPosition + 3).trim();
+        LocalDate parsedStartDate = LocalDate.parse(startDate);
+        LocalDate parsedEndDate = LocalDate.parse(endDate);
+        if(parsedStartDate.isAfter(parsedEndDate)) {
             throw new DeadlineTimelineError();
         }
-        taskAL.add(new Event(eventDescription, parsedStartTime, parsedEndTime));
+        taskAL.add(new Event(eventDescription, parsedStartDate, parsedEndDate));
     }
     private static void eventExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
