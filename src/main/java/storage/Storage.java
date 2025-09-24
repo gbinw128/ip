@@ -64,6 +64,7 @@ public class Storage {
             String taskName = description.substring(0,description.indexOf("(by:")).trim();
             String byDateTime =  description.substring(description.indexOf("(by:")+4).trim();
             byDateTime = byDateTime.replace(")","");
+            byDateTime = byDateTime.replace(" ","T");
             LocalDateTime parsedByDateTime = LocalDateTime.parse(byDateTime);
             taskAL.add(new Deadline(taskName, parsedByDateTime));
         } else if(taskType.equalsIgnoreCase("E")){
@@ -71,6 +72,9 @@ public class Storage {
             String fromTime =  description.substring(description.indexOf("(From:")+6,description.indexOf("--")).trim();
             String toTime =  description.substring(description.indexOf("To:")+3).trim();
             toTime = toTime.replace(")","");
+
+            fromTime = fromTime.replace(" ","T");
+            toTime = toTime.replace(" ","T");
 
             LocalDateTime parsedFromTime = LocalDateTime.parse(fromTime);
             LocalDateTime parsedToTime = LocalDateTime.parse(toTime);
