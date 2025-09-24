@@ -32,7 +32,7 @@ public class Parser {
     }
 
     public static String commandCheck(String line) {
-        String appendedLine = line.trim();
+        String appendedLine = line.trim().toLowerCase();
         if (appendedLine.startsWith("bye")) {
             return "bye";
         } else if (line.trim().startsWith("mark")) {

@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import Bert.Deadline;
@@ -61,10 +62,10 @@ public class Storage {
         }
         else if(taskType.equalsIgnoreCase("D")){
             String taskName = description.substring(0,description.indexOf("(by:")).trim();
-            String byDate =  description.substring(description.indexOf("(by:")+4).trim();
-            byDate = byDate.replace(")","");
-            LocalDate parsedBydate = LocalDate.parse(byDate);
-            taskAL.add(new Deadline(taskName, parsedBydate));
+            String byDateTime =  description.substring(description.indexOf("(by:")+4).trim();
+            byDateTime = byDateTime.replace(")","");
+            LocalDateTime parsedByDateTime = LocalDateTime.parse(byDateTime);
+            taskAL.add(new Deadline(taskName, parsedByDateTime));
         } else if(taskType.equalsIgnoreCase("E")){
             String taskName = description.substring(0,description.indexOf("(From:")).trim();
             String fromTime =  description.substring(description.indexOf("(From:")+6,description.indexOf("--")).trim();

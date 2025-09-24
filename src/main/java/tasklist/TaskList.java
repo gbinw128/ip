@@ -11,6 +11,8 @@ import parser.Parser;
 import ui.Ui;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
 import static Bert.Bert.taskAL;
@@ -143,10 +145,18 @@ public class TaskList {
         int commmandLength = "deadline".length();
         deadlineExceptionCheck(cleanLine, commmandLength);
         int dividerPosition = cleanLine.indexOf("/by");
+
         String deadlineDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
         String deadline = cleanLine.substring(dividerPosition + 3).trim();
+        String deadlineTime = deadline.substring(10).trim();
+        deadlineTime = addCharToString(deadlineTime,':',2);
+        deadline = deadline.substring(0,10).trim();
+
         LocalDate parsedDeadline = LocalDate.parse(deadline);
-        taskAL.add(new Deadline(deadlineDescription, parsedDeadline));
+        LocalTime parsedDeadlineTime = LocalTime.parse(deadlineTime);
+        LocalDateTime parsedDeadlineDateTime = LocalDateTime.parse(parsedDeadline+"T"+parsedDeadlineTime);
+
+        taskAL.add(new Deadline(deadlineDescription, parsedDeadlineDateTime));
     }
     private static void deadlineExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
@@ -201,6 +211,21 @@ public class TaskList {
         }
     }
 
+    public static String addCharToString(String str, char c,
+                                         int pos)
+    {
+
+        // Creating an object of StringBuffer class
+        StringBuffer stringBuffer = new StringBuffer(str);
+
+        // insert() method where position of character to be
+        // inserted is specified as in arguments
+        stringBuffer.insert(pos, c);
+
+        // Return the updated string
+        // Concatenated string
+        return stringBuffer.toString();
+    }
 
 
 }

@@ -13,6 +13,9 @@ public class Ui { //deals with interactions with the user
     public static void print(String line) {
         System.out.print(line);
     }
+    public static void pt(String line) {
+        System.out.println("GBW: "+ line);
+    }
 
     public static void welcomeMenu(){
         String logo= """
