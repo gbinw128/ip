@@ -23,16 +23,16 @@ import ui.Ui;
 
 public class Bert {
 
-
-    private static ArrayList<Task> taskAL = new ArrayList<Task>();
-    private static String saveFilePath = "./StorageData/data.txt";
+    public static ArrayList<Task> taskAL = new ArrayList<Task>();
 
     public static void main(String[] args) {
-        
         Ui ui = new Ui();
         ui.welcomeMenu();
+        String saveFilePath = "./StorageData/data.txt";
+        Storage storage = new Storage(saveFilePath);
+
         try{
-            readFromSaveFile();
+            storage.readFromSaveFile();
         } catch (IOException e){
             println("READERROR");
         }
@@ -42,9 +42,9 @@ public class Bert {
             String command = commandCheck(line);
             switch (command){
                 case "bye":
-                    println(goodbyeMessage);
+                    Ui.exitMessage();
                     try{
-                        writeToFile();
+                        Storage.writeToFile();
                     } catch(IOException e){
                         println("IO: smth wrong");
                     }
@@ -290,71 +290,5 @@ public class Bert {
     }
     public static void pt(String test) {
         System.out.println("XX"+test+"XX");
-    }
-
-    private static void writeToFile() throws IOException {
-        File f = new File(saveFilePath); //create file obj
-        f.createNewFile(); //create file in directory
-        System.out.println("full path: " + f.getAbsolutePath());
-        System.out.println("file exists?: " + f.exists());
-        FileWriter fw = new FileWriter(saveFilePath);
-        for(Task task : taskAL)
-        {
-            fw.write(task.toString());
-            fw.write(System.lineSeparator());
-        }
-        fw.close();
-    }
-    private static void readFromSaveFile() throws IOException {
-        File saveFile = new File(saveFilePath);
-        initializeDirectory();
-        checkIfSaveFileExists(saveFile);
-        Scanner s = new Scanner(saveFile); // create a Scanner using the File as the source
-        while (s.hasNext()) {
-            parsingFromSaveFile(s);
-        }
-        if(!taskAL.isEmpty()){
-            println("Tasks have been initialized.");
-            listTasks();
-        }
-    }
-    private static void checkIfSaveFileExists(File saveFile) throws IOException {
-        if (saveFile.createNewFile()) {
-            System.out.println("File created: " + saveFile.getName());
-        } else {
-            println("File already exists.");
-        }
-    }
-    private static void initializeDirectory() {
-        String dirPath = "./StorageData";
-        File d = new File(dirPath);
-        boolean dirCreated = d.mkdir();
-        if(!dirCreated){
-            println("Error: could not create directory or directory exists");
-        } else {
-            println("Directory created");
-        }
-    }
-
-    private static void parsingFromSaveFile(Scanner s) {
-        String line = s.nextLine();
-        String taskType = line.substring(1,2);
-        String description = line.substring(7);
-
-        if(taskType.equalsIgnoreCase("T")){
-            taskAL.add(new Todo(description));
-        }
-        else if(taskType.equalsIgnoreCase("D")){
-            String taskName = description.substring(0,description.indexOf("(by:")).trim();
-            String byDate =  description.substring(description.indexOf("(by:")+4).trim();
-            byDate = byDate.replace(")","");
-            taskAL.add(new Deadline(taskName, byDate));
-        } else if(taskType.equalsIgnoreCase("E")){
-            String taskName = description.substring(0,description.indexOf("(From:")).trim();
-            String fromTime =  description.substring(description.indexOf("(From:")+6,description.indexOf("--")).trim();
-            String toTime =  description.substring(description.indexOf("To:")+3).trim();
-            toTime = toTime.replace(")","");
-            taskAL.add(new Event(taskName, fromTime, toTime));
-        }
     }
 }
