@@ -38,26 +38,17 @@ public class Ui { //deals with interactions with the user
         println(goodbyeMessage);
     }
 
+    public static void fileErrorMessage() {
+        println("Error: could not create file");
+    }
+    public static void fileDirectoryErrorMessage() {
+        println("\tError: could not create directory");
+    }
     public static void fileEmptyMessage(){
         println("\tFile empty, nothing initialized");
     }
     public static void fileIntializedMessage() {
         println("\tTasks have been initialized. Use 'list' to see.");
-    }
-    public static void fileDirectoryExistsMessage() {
-        println("\tDirectory exists.");
-    }
-    public static void fileDirectoryErrorMessage() {
-        println("\tError: could not create directory");
-    }
-    public static void fileDirectoryCreatedMessage() {
-        println("\tDirectory created.");
-    }
-    public static void fileCreatedMessage() {
-        println("\tFile created.");
-    }
-    public static void fileExistsMessage() {
-        println("\tFile already exists.");
     }
     public static void fileWrittenMessage() {
         println("\tTasks have been written to the file.");
@@ -79,4 +70,5 @@ public class Ui { //deals with interactions with the user
     public static void print(String line) {
         System.out.print(line);
     }
+
 }

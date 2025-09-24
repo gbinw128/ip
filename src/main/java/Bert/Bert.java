@@ -27,9 +27,8 @@ public class Bert {
     public static ArrayList<Task> taskAL = new ArrayList<Task>();
 
     public static void main(String[] args) {
-        String saveFileDirectory = "./StorageData";
         String saveFilePath = "./StorageData/data.txt";
-        Storage storage = new Storage(saveFilePath,saveFileDirectory);
+        Storage storage = new Storage(saveFilePath);
 
         Ui ui = new Ui();
         ui.welcomeMenu();

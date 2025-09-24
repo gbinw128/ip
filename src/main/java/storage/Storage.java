@@ -1,10 +1,11 @@
 package storage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 
@@ -20,11 +21,11 @@ import static Bert.Bert.taskAL;
 
 public class Storage {
     private static String saveFilePath;
-    private static String saveFileDirectory;
+    private static Path saveFileDirectoryPath;
 
-    public Storage(String saveFilePath,String saveFileDirectory) {
+    public Storage(String saveFilePath) {
         this.saveFilePath = saveFilePath;
-        this.saveFileDirectory = saveFileDirectory;
+        this.saveFileDirectoryPath = Paths.get(saveFilePath);
     }
 
     public void readFromSaveFile() {
@@ -76,7 +77,7 @@ public class Storage {
     public static void writeToSaveFile(){
         try {
             createDirectory();
-            File saveFile = new File(saveFilePath); //create file obj
+            File saveFile = new File(saveFilePath);
             createFile(saveFile);
 
             FileWriter fw = new FileWriter(saveFilePath);
@@ -93,23 +94,18 @@ public class Storage {
     }
 
     private static void createDirectory() {
-        File d = new File(saveFileDirectory);
-        if(d.exists()){
-            Ui.fileDirectoryExistsMessage();
-            return;
-        }
-        boolean dirCreated = d.mkdir();
-        if(!dirCreated){
+        try {
+            Files.createDirectories(saveFileDirectoryPath.getParent());
+            Files.createFile(saveFileDirectoryPath);
+        } catch (IOException e){
             Ui.fileDirectoryErrorMessage();
-        } else {
-            Ui.fileDirectoryCreatedMessage();
         }
     }
-    private static void createFile(File saveFile) throws IOException {
-        if (saveFile.createNewFile()) {
-            Ui.fileCreatedMessage();
-        } else {
-            Ui.fileExistsMessage();
+    private static void createFile(File saveFile){
+        try{
+            saveFile.createNewFile();
+        } catch (IOException e) {
+            Ui.fileErrorMessage();
         }
     }
 
