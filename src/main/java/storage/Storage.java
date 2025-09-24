@@ -70,7 +70,9 @@ public class Storage {
             String fromTime =  description.substring(description.indexOf("(From:")+6,description.indexOf("--")).trim();
             String toTime =  description.substring(description.indexOf("To:")+3).trim();
             toTime = toTime.replace(")","");
-            taskAL.add(new Event(taskName, fromTime, toTime));
+            LocalDate parsedFromTime = LocalDate.parse(fromTime);
+            LocalDate parsedToTime = LocalDate.parse(toTime);
+            taskAL.add(new Event(taskName, parsedFromTime, parsedToTime));
         }
     }
 

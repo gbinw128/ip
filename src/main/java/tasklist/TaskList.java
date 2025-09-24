@@ -1,14 +1,6 @@
 package tasklist;
 
-import exceptions.DeadlineDateError;
-import exceptions.DeadlineItemError;
-import exceptions.DeleteItemError;
-import exceptions.DeleteNumberError;
-import exceptions.EventDateError;
-import exceptions.EventItemError;
-import exceptions.MarkUnmarkItemError;
-import exceptions.MarkUnmarkNumberError;
-import exceptions.TodoItemError;
+import exceptions.*;
 
 import Bert.Deadline;
 import Bert.Event;
@@ -129,6 +121,10 @@ public class TaskList {
                     Ui.emptyEventItemExceptionMessage();
                 } catch (EventDateError e) {
                     Ui.emptyEventDateExceptionMessage();
+                } catch (DateTimeParseException e) {
+                    System.out.println("\tInvalid date format (YYYY-MM-DD)");
+                }catch (DeadlineTimelineError e) {
+                    System.out.println("\tInvalid Timeline");
                 }
                 break;
         }
@@ -150,10 +146,9 @@ public class TaskList {
         int dividerPosition = cleanLine.indexOf("/by");
         String deadlineDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
         String deadline = cleanLine.substring(dividerPosition + 3).trim();
-        LocalDate deadlineDate = LocalDate.parse(deadline);
-        taskAL.add(new Deadline(deadlineDescription, deadlineDate));
+        LocalDate parsedDeadline = LocalDate.parse(deadline);
+        taskAL.add(new Deadline(deadlineDescription, parsedDeadline));
     }
-
     private static void deadlineExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
         if (itemCheck.isEmpty()) {
@@ -173,7 +168,7 @@ public class TaskList {
     }
 
     private static void addEvent(String cleanLine)
-            throws EventItemError, EventDateError {
+            throws EventItemError, EventDateError, DateTimeParseException {
         int commmandLength = "event".length();
         eventExceptionCheck(cleanLine, commmandLength);
         int dividerPosition = cleanLine.indexOf("/from");
@@ -181,7 +176,12 @@ public class TaskList {
         String eventDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
         String startTime = cleanLine.substring(dividerPosition + commmandLength, secondDividerPosition).trim();
         String endTime = cleanLine.substring(secondDividerPosition + 3).trim();
-        taskAL.add(new Event(eventDescription, startTime, endTime));
+        LocalDate parsedStartTime = LocalDate.parse(startTime);
+        LocalDate parsedEndTime = LocalDate.parse(endTime);
+        if(parsedStartTime.isAfter(parsedEndTime)) {
+            throw new DeadlineTimelineError();
+        }
+        taskAL.add(new Event(eventDescription, parsedStartTime, parsedEndTime));
     }
     private static void eventExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();

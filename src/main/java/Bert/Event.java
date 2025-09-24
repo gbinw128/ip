@@ -1,19 +1,21 @@
 package Bert;
 
-public class Event extends Task{
-    protected String startTime;
-    protected String endTime;
+import java.time.LocalDate;
 
-    public Event(String description,String startTime,String endTime) {
+public class Event extends Task{
+    protected LocalDate startTime;
+    protected LocalDate endTime;
+
+    public Event(String description,LocalDate startTime,LocalDate endTime) {
         super(description);
         setStartTime(startTime);
         setEndTime(endTime);
     }
-    public void setStartTime(String startTime)
+    public void setStartTime(LocalDate startTime)
     {
         this.startTime=startTime;
     }
-    public void setEndTime(String endTime)
+    public void setEndTime(LocalDate endTime)
     {
         this.endTime=endTime;
     }
