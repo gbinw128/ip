@@ -1,9 +1,8 @@
 package ui;
 
-import Bert.Task;
-import tasklist.TaskList;
-
 import java.util.ArrayList;
+
+import Bert.Task;
 
 import static Bert.Bert.taskAL;
 

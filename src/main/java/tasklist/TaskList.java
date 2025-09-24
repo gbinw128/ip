@@ -1,7 +1,5 @@
 package tasklist;
 
-import java.util.ArrayList;
-
 import exceptions.DeadlineDateError;
 import exceptions.DeadlineItemError;
 import exceptions.DeleteItemError;
