@@ -124,7 +124,7 @@ public class TaskList {
                     Ui.emptyEventDateExceptionMessage();
                 } catch (DateTimeParseException e) {
                     Ui.invalidDateFormatMessage();
-                }catch (EventTimelineError e) {
+                } catch (EventTimelineError e) {
                     Ui.invalidTimelineMessage();
                 }
                 break;
@@ -143,21 +143,24 @@ public class TaskList {
     private static void addDeadline(String cleanLine)
             throws DeadlineItemError, DeadlineDateError, DateTimeParseException {
         int commmandLength = "deadline".length();
+        int dateFormatLength = 10;
         deadlineExceptionCheck(cleanLine, commmandLength);
         int dividerPosition = cleanLine.indexOf("/by");
 
         String deadlineDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
+
         String deadline = cleanLine.substring(dividerPosition + 3).trim();
-        String deadlineTime = deadline.substring(10).trim();
-        deadlineTime = addCharToString(deadlineTime,':',2);
-        deadline = deadline.substring(0,10).trim();
+        String deadlineTime = deadline.substring(dateFormatLength).trim();
+        deadlineTime = addCharToString(deadlineTime, ':', 2);
+        deadline = deadline.substring(0, dateFormatLength).trim();
 
         LocalDate parsedDeadline = LocalDate.parse(deadline);
         LocalTime parsedDeadlineTime = LocalTime.parse(deadlineTime);
-        LocalDateTime parsedDeadlineDateTime = LocalDateTime.parse(parsedDeadline+"T"+parsedDeadlineTime);
+        LocalDateTime parsedDeadlineDateTime = LocalDateTime.parse(parsedDeadline + "T" + parsedDeadlineTime);
 
         taskAL.add(new Deadline(deadlineDescription, parsedDeadlineDateTime));
     }
+
     private static void deadlineExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
         if (itemCheck.isEmpty()) {
@@ -176,36 +179,44 @@ public class TaskList {
         }
     }
 
-    private static void addEvent(String cleanLine) //event tiohatahio /from 2025-10-12 1500 /to 2025-10-13 1500
+    private static void addEvent(String cleanLine)
             throws EventItemError, EventDateError, DateTimeParseException {
         int commmandLength = "event".length();
+        int dateFormatLength = 10;
         eventExceptionCheck(cleanLine, commmandLength);
         int dividerPosition = cleanLine.indexOf("/from");
         int secondDividerPosition = cleanLine.indexOf("/to", dividerPosition + 1);
 
         String eventDescription = cleanLine.substring(commmandLength, dividerPosition).trim();
-        String startDate = cleanLine.substring(dividerPosition + commmandLength, secondDividerPosition).trim();
-        String startDateTime = startDate.substring(10).trim();
 
-                startDateTime = addCharToString(startDateTime,':',2);Ui.pt(startDateTime);
-                startDate = startDate.substring(0,10).trim();
-        String endDate = cleanLine.substring(secondDividerPosition + 3).trim();
-        String endDateTime = endDate.substring(10).trim();
-                endDateTime = addCharToString(endDateTime,':',2); Ui.pt(startDateTime);
-                endDate = endDate.substring(0,10).trim();
+        String startDate = cleanLine.substring(dividerPosition + commmandLength, secondDividerPosition).trim();
+        String startDateTime = startDate.substring(dateFormatLength).trim();
+        startDateTime = addCharToString(startDateTime, ':', 2);
+        startDate = startDate.substring(0, dateFormatLength).trim();
+
         LocalDate parsedStartDate = LocalDate.parse(startDate);
         LocalTime parsedStartTime = LocalTime.parse(startDateTime);
+
+        String endDate = cleanLine.substring(secondDividerPosition + 3).trim();
+        String endDateTime = endDate.substring(dateFormatLength).trim();
+        endDateTime = addCharToString(endDateTime, ':', 2);
+        endDate = endDate.substring(0, dateFormatLength).trim();
+
         LocalDate parsedEndDate = LocalDate.parse(endDate);
         LocalTime parsedEndTime = LocalTime.parse(endDateTime);
-        LocalDateTime parsedStartDateTime = LocalDateTime.parse(parsedStartDate+"T"+parsedStartTime);
-        LocalDateTime parsedEndDateTime = LocalDateTime.parse(parsedEndDate+"T"+parsedEndTime);
 
+        LocalDateTime parsedStartDateTime = LocalDateTime.parse(parsedStartDate + "T" + parsedStartTime);
+        LocalDateTime parsedEndDateTime = LocalDateTime.parse(parsedEndDate + "T" + parsedEndTime);
 
-        if(parsedStartDate.isAfter(parsedEndDate)) {
+        if (parsedStartDate.isAfter(parsedEndDate)) {
+            throw new EventTimelineError();
+        }
+        if(parsedStartDate.isEqual(parsedEndDate) && parsedStartTime.isAfter(parsedEndTime)) {
             throw new EventTimelineError();
         }
         taskAL.add(new Event(eventDescription, parsedStartDateTime, parsedEndDateTime));
     }
+
     private static void eventExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
         if (itemCheck.isEmpty()) {
@@ -226,8 +237,7 @@ public class TaskList {
     }
 
     public static String addCharToString(String str, char c,
-                                         int pos)
-    {
+                                         int pos) {
 
         // Creating an object of StringBuffer class
         StringBuffer stringBuffer = new StringBuffer(str);
