@@ -39,28 +39,28 @@ public class Ui { //deals with interactions with the user
     }
 
     public static void fileEmptyMessage(){
-        println("File empty, nothing initialized");
+        println("\tFile empty, nothing initialized");
     }
     public static void fileIntializedMessage() {
-        println("Tasks have been initialized. Use 'list' to see.");
+        println("\tTasks have been initialized. Use 'list' to see.");
     }
     public static void fileDirectoryExistsMessage() {
-        println("Directory exists.");
+        println("\tDirectory exists.");
     }
     public static void fileDirectoryErrorMessage() {
-        println("Error: could not create directory");
+        println("\tError: could not create directory");
     }
     public static void fileDirectoryCreatedMessage() {
-        println("Directory created.");
+        println("\tDirectory created.");
     }
     public static void fileCreatedMessage() {
-        println("File created.");
+        println("\tFile created.");
     }
     public static void fileExistsMessage() {
-        println("File already exists.");
+        println("\tFile already exists.");
     }
     public static void fileWrittenMessage() {
-        println("Tasks have been written to the file.");
+        println("\tTasks have been written to the file.");
     }
 
     public static void successfulAddTaskMessage(ArrayList<Task> taskAL) {
