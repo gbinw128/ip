@@ -5,7 +5,16 @@ import tasklist.TaskList;
 
 import java.util.ArrayList;
 
+import static Bert.Bert.taskAL;
+
 public class Ui { //deals with interactions with the user
+    public static void println(String line) {
+        System.out.println(line);
+    }
+    public static void print(String line) {
+        System.out.print(line);
+    }
+
     public static void welcomeMenu(){
         String logo= """
                  .────────────────.  .────────────────.  .────────────────.  .────────────────.
@@ -32,7 +41,6 @@ public class Ui { //deals with interactions with the user
                 \t-bye""";
         println(logo + welcomeMessage+commandMessage);
     }
-
     public static void exitMessage(){
         String goodbyeMessage = "\tBye. Hope to see you again soon!";
         println(goodbyeMessage);
@@ -64,11 +72,53 @@ public class Ui { //deals with interactions with the user
         println("\tGot it. I've added this task:\n\t\t" + taskAL.get(taskAL.size()-1));
         println("\tNow you have " + taskAL.size() + " tasks in the list.");
     }
-    public static void println(String line) {
-        System.out.println(line);
+    public static void listAllTasksMessage() {
+        println("\tHere are the tasks in your list:");
+        for(Task task : taskAL) {
+            int printIndex = taskAL.indexOf(task)+1;
+            println("\t\t" + printIndex + ". " + task);
+        }
     }
-    public static void print(String line) {
-        System.out.print(line);
+    public static void markTaskMessage(Task taskToMarkDone) {
+        println("\tNice! I've marked this task as done:");
+        println("\t\t" + taskToMarkDone);
+    }
+    public static void unmarkTaskMessage(Task taskToUnmarkDone) {
+        println("\tOk, I've unmarked this task:");
+        println("\t\t" + taskToUnmarkDone);
+    }
+    public static void deleteTaskMessage(int taskNumToDelete) {
+        println("\tUnderstood, I've Deleted this task:");
+        println("\t\t" + taskAL.get(taskNumToDelete));
     }
 
+    public static void emptyTodoExceptionMessage() {
+        println("\tERROR(Todo): Empty item in ToDo");
+    }
+    public static void emptyDeadlineItemExceptionMessage() {
+        println("\tERROR(Deadline): Empty item in Deadline");
+    }
+    public static void emptyDeadlineDateExceptionMessage() {
+        println("\tERROR(Deadline): Empty date in Deadline");
+    }
+    public static void emptyEventDateExceptionMessage() {
+        println("\tERROR(Event): Empty date in Event");
+    }
+    public static void emptyEventItemExceptionMessage() {
+        println("\tERROR(Event): Empty item in Event");
+    }
+
+    public static void missingNumberMessage(String commandType) {
+        println("\tERROR(" + commandType + ") : Number Missing");
+    }
+    public static void inoperableItemMessage(String commandType) {
+        println("\tERROR(" + commandType + "): Item does not exist");
+    }
+    public static void invalidCommand() {
+        println("\tERROR: Invalid command");
+    }
+
+    public static void IOExceptionErrorMessage() {
+        println("IO: something wrong");
+    }
 }

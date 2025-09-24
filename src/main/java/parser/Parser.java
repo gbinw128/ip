@@ -15,27 +15,25 @@ import tasklist.TaskList;
 public class Parser {
 
     public static void handleCommand(String userInput) {
-        //Scanner in = new Scanner(System.in);
-        //while(true){
-            //String line = in.nextLine();
+
             String command = commandCheck(userInput);
             switch (command){
                 case "mark":
                     try{
                         TaskList.markTask(userInput);
                     } catch (MarkUnmarkNumberError e) {
-                        println("\tERROR(Mark): Number Missing");
+                        Ui.missingNumberMessage("mark");
                     } catch (MarkUnmarkItemError e) {
-                        println("\tERROR(Mark): Item does not exist");
+                        Ui.inoperableItemMessage("mark");
                     }
                     break;
                 case "unmark":
                     try{
                         TaskList.unmarkTask(userInput);
                     } catch (MarkUnmarkNumberError e) {
-                        println("\tERROR(Unmark): Number Missing");
+                        Ui.missingNumberMessage("unmark");
                     } catch (MarkUnmarkItemError e) {
-                        println("\tERROR(Unmark): Item does not exist");
+                        Ui.inoperableItemMessage("unmark");
                     }
                     break;
                 case "list":
@@ -50,13 +48,13 @@ public class Parser {
                     try{
                         TaskList.deleteTask(userInput);
                     } catch (DeleteNumberError e){
-                        println("\tERROR(Delete): Number Missing");
+                        Ui.missingNumberMessage("delete");
                     } catch (DeleteItemError e){
-                        println("\tERROR(Delete): Item does not exist");
+                        Ui.inoperableItemMessage("delete");
                     }
                     break;
                 default:
-                    println("\tERROR: Invalid command");
+                    Ui.invalidCommand();
                     break;
             }
         //}
@@ -86,9 +84,5 @@ public class Parser {
 
     private static String cleanFrontSpacing(String line){
         return line.replaceFirst("^\\s*", "");
-    }
-
-    public static void println(String line) {
-        System.out.println(line);
     }
 }

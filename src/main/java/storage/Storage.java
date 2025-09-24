@@ -23,9 +23,9 @@ public class Storage {
     private static String saveFilePath;
     private static Path saveFileDirectoryPath;
 
-    public Storage(String saveFilePath) {
-        this.saveFilePath = saveFilePath;
-        this.saveFileDirectoryPath = Paths.get(saveFilePath);
+    public Storage(String incomingSaveFilePath) {
+        this.saveFilePath = incomingSaveFilePath;
+        this.saveFileDirectoryPath = Paths.get(incomingSaveFilePath);
     }
 
     public void readFromSaveFile() {
@@ -48,10 +48,9 @@ public class Storage {
             }
             Ui.fileNotFoundMessage();
         } catch (IOException e) {
-            Ui.println("IO: smth wrong");
+            Ui.IOExceptionErrorMessage();
         }
     }
-
     private static void parsingFromSaveFile(Scanner s) {
         String line = s.nextLine();
         String taskType = line.substring(1,2);
@@ -74,6 +73,7 @@ public class Storage {
         }
     }
 
+
     public static void writeToSaveFile(){
         try {
             createDirectory();
@@ -89,10 +89,9 @@ public class Storage {
             Ui.fileWrittenMessage();
         }
         catch(IOException e){
-            Ui.println("IO: smth wrong");
+            Ui.IOExceptionErrorMessage();
         }
     }
-
     private static void createDirectory() {
         try {
             Files.createDirectories(saveFileDirectoryPath.getParent());
@@ -108,5 +107,4 @@ public class Storage {
             Ui.fileErrorMessage();
         }
     }
-
 }

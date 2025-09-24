@@ -39,9 +39,9 @@ public class TaskList {
         }
         Task taskToMarkDone =taskAL.get(taskNumToMark);
         taskToMarkDone.markAsDone();
-        println("\tNice! I've marked this task as done:");
-        println("\t\t" + taskToMarkDone);
+        Ui.markTaskMessage(taskToMarkDone);
     }
+
     public static void unmarkTask(String line)
             throws MarkUnmarkNumberError, MarkUnmarkItemError {
         int unmarkWordSize = "unmark".length();
@@ -54,18 +54,15 @@ public class TaskList {
         if(taskNumToUnmark >= taskAL.size()  || taskNumToUnmark < 0){
             throw new MarkUnmarkItemError();
         }
-        Task taskToUnnarkDone = taskAL.get(taskNumToUnmark);
-        taskToUnnarkDone.unmarkAsDone();
-        println("\tOk, I've unmarked this task:");
-        println("\t\t" + taskToUnnarkDone);
+        Task taskToUnmarkDone = taskAL.get(taskNumToUnmark);
+        taskToUnmarkDone.unmarkAsDone();
+        Ui.unmarkTaskMessage(taskToUnmarkDone);
     }
+
     public static void listTasks() {
-        println("\tHere are the tasks in your list:");
-        for(Task task : taskAL) {
-            int printIndex = taskAL.indexOf(task)+1;
-            println("\t\t" + printIndex + ". " + task);
-        }
+        Ui.listAllTasksMessage();
     }
+
     public static void deleteTask(String line) {
         int deleteWordSize = "delete".length();
         String cleanLine = cleanFrontSpacing(line).trim();
@@ -77,8 +74,7 @@ public class TaskList {
         if(taskNumToDelete >= taskAL.size() || taskNumToDelete < 0){
             throw new DeleteItemError();
         }
-        println("\tUnderstood, I've Deleted this task:");
-        println("\t\t" + taskAL.get(taskNumToDelete));
+        Ui.deleteTaskMessage(taskNumToDelete);
         taskAL.remove(taskNumToDelete);
     }
 
@@ -91,7 +87,7 @@ public class TaskList {
                     addTodo(cleanLine);
                     Ui.successfulAddTaskMessage(taskAL);
                 } catch(TodoItemError e){
-                    println("\tERROR(Todo): Empty item in ToDo");
+                    Ui.emptyTodoExceptionMessage();
                 }
                 break;
             case "deadline":
@@ -100,9 +96,9 @@ public class TaskList {
                     addDeadline(cleanLine);
                     Ui.successfulAddTaskMessage(taskAL);
                 } catch (DeadlineItemError e){
-                    println("\tERROR(Deadline): Empty item in Deadline");
+                    Ui.emptyDeadlineItemExceptionMessage();
                 } catch (DeadlineDateError e){
-                    println("\tDeadline): Empty date in Deadline");
+                    Ui.emptyDeadlineDateExceptionMessage();
                 }
                 break;
             case "event":
@@ -110,9 +106,9 @@ public class TaskList {
                     addEvent(cleanLine);
                     Ui.successfulAddTaskMessage(taskAL);
                 } catch(EventItemError e){
-                    println("\tERROR(Event): Empty item in Event");
+                    Ui.emptyEventItemExceptionMessage();
                 } catch(EventDateError e){
-                    println("\tERROR(Event): Empty date in Event");
+                    Ui.emptyEventDateExceptionMessage();
                 }
                 break;
         }
@@ -188,8 +184,5 @@ public class TaskList {
         return line.replaceFirst("^\\s*", "");
     }
 
-    public static void println(String line) {
-        System.out.println(line);
-    }
 
 }
