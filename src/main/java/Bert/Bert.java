@@ -9,6 +9,7 @@ import exceptions.EventItemError;
 import exceptions.MarkUnmarkItemError;
 import exceptions.MarkUnmarkNumberError;
 import exceptions.TodoItemError;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,12 +17,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import storage.Storage;
+import tasklist.TaskList;
+import ui.Ui;
+
 public class Bert {
+
+
     private static ArrayList<Task> taskAL = new ArrayList<Task>();
     private static String saveFilePath = "./StorageData/data.txt";
+
     public static void main(String[] args) {
-        String goodbyeMessage = "\tBye. Hope to see you again soon!";
-        welcomeMenu();
+        
+        Ui ui = new Ui();
+        ui.welcomeMenu();
         try{
             readFromSaveFile();
         } catch (IOException e){
@@ -108,32 +117,7 @@ public class Bert {
         }
         return "";
     }
-    private static void welcomeMenu(){
-        String logo= """
-                 .────────────────.  .────────────────.  .────────────────.  .────────────────.
-                │ .──────────────. ││ .──────────────. ││ .──────────────. ││ .──────────────. │
-                │ │   ______     │ ││ │  _________   │ ││ │  _______     │ ││ │  _________   │ │
-                │ │  │_   _ ╲    │ ││ │ │_   ___  │  │ ││ │ │_   __ ╲    │ ││ │ │  _   _  │  │ │
-                │ │    │ │_) │   │ ││ │   │ │_  ╲_│  │ ││ │   │ │__) │   │ ││ │ │_╱ │ │ ╲_│  │ │
-                │ │    │  __'.   │ ││ │   │  _│  _   │ ││ │   │  __ ╱    │ ││ │     │ │      │ │
-                │ │   _│ │__) │  │ ││ │  _│ │___╱ │  │ ││ │  _│ │  ╲ ╲_  │ ││ │    _│ │_     │ │
-                │ │  │_______╱   │ ││ │ │_________│  │ ││ │ │____│ │___│ │ ││ │   │_____│    │ │
-                │ │              │ ││ │              │ ││ │              │ ││ │              │ │
-                │ '──────────────' ││ '──────────────' ││ '──────────────' ││ '──────────────' │
-                 '────────────────'  '────────────────'  '────────────────'  '────────────────'
-                """;
-        String welcomeMessage = "\tHello! I'm BERT - Bot for Echo, Response and Talk" +
-                "\n\tHere are the following commands:";
-        String commandMessage = """
-                \n\t-todo <item>
-                \t-deadline <item> /by <date>
-                \t-event <item> /from <date> /to <date>
-                \t-mark <itemNumber>
-                \t-unmark <itemNumber>
-                \t-list
-                \t-bye""";
-        println(logo + welcomeMessage+commandMessage);
-    }
+
 
     private static void markTask(String line)
             throws MarkUnmarkNumberError, MarkUnmarkItemError {
@@ -343,7 +327,7 @@ public class Bert {
     }
     private static void initializeDirectory() {
         String dirPath = "./StorageData";
-        File d =  new File(dirPath);
+        File d = new File(dirPath);
         boolean dirCreated = d.mkdir();
         if(!dirCreated){
             println("Error: could not create directory or directory exists");
