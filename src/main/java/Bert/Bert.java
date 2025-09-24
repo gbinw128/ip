@@ -18,11 +18,12 @@ import java.util.Scanner;
 
 public class Bert {
     private static ArrayList<Task> taskAL = new ArrayList<Task>();
+    private static String saveFilePath = "./StorageData/data.txt";
     public static void main(String[] args) {
         String goodbyeMessage = "\tBye. Hope to see you again soon!";
         welcomeMenu();
         try{
-            readFromFile();
+            readFromSaveFile();
         } catch (IOException e){
             println("READERROR");
         }
@@ -308,12 +309,11 @@ public class Bert {
     }
 
     private static void writeToFile() throws IOException {
-        String filePath = "./docs/temp.txt";
-        File f = new File(filePath); //create file obj
+        File f = new File(saveFilePath); //create file obj
         f.createNewFile(); //create file in directory
         System.out.println("full path: " + f.getAbsolutePath());
         System.out.println("file exists?: " + f.exists());
-        FileWriter fw = new FileWriter(filePath);
+        FileWriter fw = new FileWriter(saveFilePath);
         for(Task task : taskAL)
         {
             fw.write(task.toString());
@@ -321,32 +321,34 @@ public class Bert {
         }
         fw.close();
     }
-    private static void readFromFile() throws IOException {
-        String dirPath = "./StorageData";
-        String filePath = "./StorageData/data.txt";
-        File d =  new File(dirPath);
-        File f = new File(filePath); // create a File for the given file path
-        boolean dirCreated = d.mkdir();
-        if(!dirCreated){
-            println("Error: could not create directory or directory exists");
-        }
-        else {
-            println("Directory created");
-        }
-        if (f.createNewFile()) {           // Try to create the file
-            System.out.println("File created: " + f.getName());
-        } else {
-            println("File already exists.");
-        }
-
-        Scanner s = new Scanner(f); // create a Scanner using the File as the source
-
+    private static void readFromSaveFile() throws IOException {
+        File saveFile = new File(saveFilePath);
+        initializeDirectory();
+        checkIfSaveFileExists(saveFile);
+        Scanner s = new Scanner(saveFile); // create a Scanner using the File as the source
         while (s.hasNext()) {
-            initializeFromTempFile(s);
+            parsingFromSaveFile(s);
         }
         if(!taskAL.isEmpty()){
             println("Tasks have been initialized.");
             listTasks();
+        }
+    }
+    private static void checkIfSaveFileExists(File saveFile) throws IOException {
+        if (saveFile.createNewFile()) {
+            System.out.println("File created: " + saveFile.getName());
+        } else {
+            println("File already exists.");
+        }
+    }
+    private static void initializeDirectory() {
+        String dirPath = "./StorageData";
+        File d =  new File(dirPath);
+        boolean dirCreated = d.mkdir();
+        if(!dirCreated){
+            println("Error: could not create directory or directory exists");
+        } else {
+            println("Directory created");
         }
     }
 
