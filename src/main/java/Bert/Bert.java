@@ -28,8 +28,9 @@ public class Bert {
     public static void main(String[] args) {
         Ui ui = new Ui();
         ui.welcomeMenu();
+        String saveFileDirectory = "./StorageData";
         String saveFilePath = "./StorageData/data.txt";
-        Storage storage = new Storage(saveFilePath);
+        Storage storage = new Storage(saveFilePath,saveFileDirectory);
 
         try{
             storage.readFromSaveFile();

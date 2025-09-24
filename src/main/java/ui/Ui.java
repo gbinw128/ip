@@ -33,10 +33,37 @@ public class Ui { //deals with interactions with the user
         println(goodbyeMessage);
     }
 
+    public static void fileEmptyMessage(){
+        println("File empty, nothing initialized");
+    }
+    public static void fileIntializedMessage() {
+        println("Tasks have been initialized. Use 'list' to see.");
+    }
+    public static void fileDirectoryExistsMessage() {
+        println("Directory exists.");
+    }
+    public static void fileDirectoryErrorMessage() {
+        println("Error: could not create directory");
+    }
+    public static void fileDirectoryCreatedMessage() {
+        println("Directory created.");
+    }
+    public static void fileCreatedMessage() {
+        println("File created.");
+    }
+    public static void fileExistsMessage() {
+        println("File already exists.");
+    }
+    public static void fileWrittenMessage() {
+        println("Tasks have been written to the file.");
+    }
+
     public static void println(String line) {
         System.out.println(line);
     }
     public static void print(String line) {
         System.out.print(line);
     }
+
+
 }
