@@ -1,5 +1,10 @@
 package ui;
 
+import Bert.Task;
+import tasklist.TaskList;
+
+import java.util.ArrayList;
+
 public class Ui { //deals with interactions with the user
     public static void welcomeMenu(){
         String logo= """
@@ -56,6 +61,11 @@ public class Ui { //deals with interactions with the user
     }
     public static void fileWrittenMessage() {
         println("Tasks have been written to the file.");
+    }
+
+    public static void successfulAddTaskMessage(ArrayList<Task> taskAL) {
+        println("\tGot it. I've added this task:\n\t\t" + taskAL.get(taskAL.size()-1));
+        println("\tNow you have " + taskAL.size() + " tasks in the list.");
     }
 
     public static void println(String line) {

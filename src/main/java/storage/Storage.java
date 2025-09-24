@@ -1,26 +1,32 @@
 package storage;
 
-import Bert.Deadline;
-import Bert.Event;
-import Bert.Task;
-import Bert.Todo;
-import ui.Ui;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Scanner;
 
+
+import Bert.Deadline;
+import Bert.Event;
+import Bert.Task;
+import Bert.Todo;
+
+import ui.Ui;
+import tasklist.TaskList;
+
 import static Bert.Bert.taskAL;
 
+
 public class Storage {
-    protected static String saveFilePath;
-    protected static String saveFileDirectory;
+    private static String saveFilePath;
+    private static String saveFileDirectory;
+
     public Storage(String saveFilePath,String saveFileDirectory) {
         this.saveFilePath = saveFilePath;
         this.saveFileDirectory = saveFileDirectory;
     }
+
     public void readFromSaveFile() throws IOException {
         File saveFile = new File(saveFilePath);
         initializeDirectory();
