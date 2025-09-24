@@ -31,7 +31,6 @@ public class Bert {
         String saveFilePath = "./StorageData/data.txt";
         Storage storage = new Storage(saveFilePath,saveFileDirectory);
 
-
         Ui ui = new Ui();
         ui.welcomeMenu();
         storage.readFromSaveFile();
@@ -43,7 +42,7 @@ public class Bert {
             userInput = in.nextLine().trim();
         }
 
-        Storage.writeToFile();
+        Storage.writeToSaveFile();
         Ui.exitMessage();
 
     }

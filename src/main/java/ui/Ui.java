@@ -62,18 +62,21 @@ public class Ui { //deals with interactions with the user
     public static void fileWrittenMessage() {
         println("\tTasks have been written to the file.");
     }
+    public static void fileNotFoundMessage() {
+        println("Save File not Found");
+    }
+    public static void fileFoundMessage() {
+        println("Save File Found");
+    }
 
     public static void successfulAddTaskMessage(ArrayList<Task> taskAL) {
         println("\tGot it. I've added this task:\n\t\t" + taskAL.get(taskAL.size()-1));
         println("\tNow you have " + taskAL.size() + " tasks in the list.");
     }
-
     public static void println(String line) {
         System.out.println(line);
     }
     public static void print(String line) {
         System.out.print(line);
     }
-
-
 }

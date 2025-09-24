@@ -30,44 +30,28 @@ public class Storage {
     public void readFromSaveFile() {
         try {
             File saveFile = new File(saveFilePath);
-            initializeDirectory();
-            checkIfSaveFileExists(saveFile);
-            Scanner s = new Scanner(saveFile); // create a Scanner using the File as the source
-            if (!s.hasNext()) {
-                Ui.fileEmptyMessage();
+            if(saveFile.exists()) {
+                Ui.fileFoundMessage();
+                Scanner s = new Scanner(saveFile);
+                if (!s.hasNext()) { //if file exists but empty
+                    Ui.fileEmptyMessage();
+                    return;
+                }
+                while (s.hasNext()) { //if file exists and have contents, import
+                    parsingFromSaveFile(s);
+                }
+                if (!taskAL.isEmpty()) { //if file has imported all its data
+                    Ui.fileIntializedMessage();
+                }
+                return;
             }
-            while (s.hasNext()) {
-                parsingFromSaveFile(s);
-            }
-            if (!taskAL.isEmpty()) {
-                Ui.fileIntializedMessage();
-            }
+            Ui.fileNotFoundMessage();
         } catch (IOException e) {
             Ui.println("IO: smth wrong");
         }
     }
-    private void initializeDirectory() {
-        File d = new File(saveFileDirectory);
-        if(d.exists()){
-            Ui.fileDirectoryExistsMessage();
-            return;
-        }
-        boolean dirCreated = d.mkdir();
-        if(!dirCreated){
-            Ui.fileDirectoryErrorMessage();
-        } else {
-            Ui.fileDirectoryCreatedMessage();
-        }
-    }
-    private void checkIfSaveFileExists(File saveFile) throws IOException {
-        if (saveFile.createNewFile()) {
-            Ui.fileCreatedMessage();
-        } else {
-            Ui.fileExistsMessage();
-        }
-    }
 
-    private void parsingFromSaveFile(Scanner s) {
+    private static void parsingFromSaveFile(Scanner s) {
         String line = s.nextLine();
         String taskType = line.substring(1,2);
         String description = line.substring(7);
@@ -89,10 +73,12 @@ public class Storage {
         }
     }
 
-    public static void writeToFile(){
+    public static void writeToSaveFile(){
         try {
+            createDirectory();
             File saveFile = new File(saveFilePath); //create file obj
-            //saveFile.createNewFile(); //create file in directory
+            createFile(saveFile);
+
             FileWriter fw = new FileWriter(saveFilePath);
             for (Task task : taskAL) {
                 fw.write(task.toString());
@@ -105,4 +91,26 @@ public class Storage {
             Ui.println("IO: smth wrong");
         }
     }
+
+    private static void createDirectory() {
+        File d = new File(saveFileDirectory);
+        if(d.exists()){
+            Ui.fileDirectoryExistsMessage();
+            return;
+        }
+        boolean dirCreated = d.mkdir();
+        if(!dirCreated){
+            Ui.fileDirectoryErrorMessage();
+        } else {
+            Ui.fileDirectoryCreatedMessage();
+        }
+    }
+    private static void createFile(File saveFile) throws IOException {
+        if (saveFile.createNewFile()) {
+            Ui.fileCreatedMessage();
+        } else {
+            Ui.fileExistsMessage();
+        }
+    }
+
 }
