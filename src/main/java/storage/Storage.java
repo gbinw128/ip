@@ -1,6 +1,7 @@
 package storage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +14,6 @@ import Bert.Task;
 import Bert.Todo;
 
 import ui.Ui;
-import tasklist.TaskList;
 
 import static Bert.Bert.taskAL;
 
@@ -27,19 +27,23 @@ public class Storage {
         this.saveFileDirectory = saveFileDirectory;
     }
 
-    public void readFromSaveFile() throws IOException {
-        File saveFile = new File(saveFilePath);
-        initializeDirectory();
-        checkIfSaveFileExists(saveFile);
-        Scanner s = new Scanner(saveFile); // create a Scanner using the File as the source
-        if(!s.hasNext()){
-            Ui.fileEmptyMessage();
-        }
-        while (s.hasNext()) {
-            parsingFromSaveFile(s);
-        }
-        if(!taskAL.isEmpty()){
-            Ui.fileIntializedMessage();
+    public void readFromSaveFile() {
+        try {
+            File saveFile = new File(saveFilePath);
+            initializeDirectory();
+            checkIfSaveFileExists(saveFile);
+            Scanner s = new Scanner(saveFile); // create a Scanner using the File as the source
+            if (!s.hasNext()) {
+                Ui.fileEmptyMessage();
+            }
+            while (s.hasNext()) {
+                parsingFromSaveFile(s);
+            }
+            if (!taskAL.isEmpty()) {
+                Ui.fileIntializedMessage();
+            }
+        } catch (IOException e) {
+            Ui.println("IO: smth wrong");
         }
     }
     private void initializeDirectory() {
@@ -85,16 +89,20 @@ public class Storage {
         }
     }
 
-    public static void writeToFile() throws IOException {
-        File saveFile = new File(saveFilePath); //create file obj
-        //saveFile.createNewFile(); //create file in directory
-        FileWriter fw = new FileWriter(saveFilePath);
-        for(Task task : taskAL)
-        {
-            fw.write(task.toString());
-            fw.write(System.lineSeparator());
+    public static void writeToFile(){
+        try {
+            File saveFile = new File(saveFilePath); //create file obj
+            //saveFile.createNewFile(); //create file in directory
+            FileWriter fw = new FileWriter(saveFilePath);
+            for (Task task : taskAL) {
+                fw.write(task.toString());
+                fw.write(System.lineSeparator());
+            }
+            fw.close();
+            Ui.fileWrittenMessage();
         }
-        fw.close();
-        Ui.fileWrittenMessage();
+        catch(IOException e){
+            Ui.println("IO: smth wrong");
+        }
     }
 }

@@ -27,39 +27,24 @@ public class Bert {
     public static ArrayList<Task> taskAL = new ArrayList<Task>();
 
     public static void main(String[] args) {
-        Ui ui = new Ui();
-        ui.welcomeMenu();
         String saveFileDirectory = "./StorageData";
         String saveFilePath = "./StorageData/data.txt";
         Storage storage = new Storage(saveFilePath,saveFileDirectory);
 
-        try{
-            storage.readFromSaveFile();
-        } catch (IOException e){
-            println("READERROR");
+
+        Ui ui = new Ui();
+        ui.welcomeMenu();
+        storage.readFromSaveFile();
+
+        Scanner in = new Scanner(System.in);
+        String userInput = in.nextLine().trim();
+        while(!userInput.equals("bye")){
+            Parser.handleCommand(userInput);
+            userInput = in.nextLine().trim();
         }
-        Parser.handleCommand();
-    }
 
+        Storage.writeToFile();
+        Ui.exitMessage();
 
-
-
-
-
-
-
-
-
-
-
-
-    public static void println(String line) {
-        System.out.println(line);
-    }
-    public static void print(String line) {
-        System.out.print(line);
-    }
-    public static void pt(String test) {
-        System.out.println("XX"+test+"XX");
     }
 }

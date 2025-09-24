@@ -14,23 +14,15 @@ import tasklist.TaskList;
 
 public class Parser {
 
-    public static void handleCommand() {
-        Scanner in = new Scanner(System.in);
-        while(true){
-            String line = in.nextLine();
-            String command = commandCheck(line);
+    public static void handleCommand(String userInput) {
+        //Scanner in = new Scanner(System.in);
+        //while(true){
+            //String line = in.nextLine();
+            String command = commandCheck(userInput);
             switch (command){
-                case "bye":
-                    Ui.exitMessage();
-                    try{
-                        Storage.writeToFile();
-                    } catch(IOException e){
-                        println("IO: smth wrong");
-                    }
-                    return;
                 case "mark":
                     try{
-                        TaskList.markTask(line);
+                        TaskList.markTask(userInput);
                     } catch (MarkUnmarkNumberError e) {
                         println("\tERROR(Mark): Number Missing");
                     } catch (MarkUnmarkItemError e) {
@@ -39,7 +31,7 @@ public class Parser {
                     break;
                 case "unmark":
                     try{
-                        TaskList.unmarkTask(line);
+                        TaskList.unmarkTask(userInput);
                     } catch (MarkUnmarkNumberError e) {
                         println("\tERROR(Unmark): Number Missing");
                     } catch (MarkUnmarkItemError e) {
@@ -52,11 +44,11 @@ public class Parser {
                 case "todo":
                 case "deadline":
                 case "event":
-                    TaskList.addTask(line);
+                    TaskList.addTask(userInput);
                     break;
                 case "delete":
                     try{
-                        TaskList.deleteTask(line);
+                        TaskList.deleteTask(userInput);
                     } catch (DeleteNumberError e){
                         println("\tERROR(Delete): Number Missing");
                     } catch (DeleteItemError e){
@@ -67,7 +59,7 @@ public class Parser {
                     println("\tERROR: Invalid command");
                     break;
             }
-        }
+        //}
     }
 
     public static String commandCheck(String line) {
