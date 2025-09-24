@@ -14,22 +14,10 @@ public class Parser {
         String command = commandCheck(userInput);
         switch (command) {
             case "mark":
-                try {
-                    TaskList.markTask(userInput);
-                } catch (MarkUnmarkNumberError e) {
-                    Ui.missingNumberMessage("mark");
-                } catch (MarkUnmarkItemError e) {
-                    Ui.inoperableItemMessage("mark");
-                }
+                TaskList.markTask(userInput);
                 break;
             case "unmark":
-                try {
-                    TaskList.unmarkTask(userInput);
-                } catch (MarkUnmarkNumberError e) {
-                    Ui.missingNumberMessage("unmark");
-                } catch (MarkUnmarkItemError e) {
-                    Ui.inoperableItemMessage("unmark");
-                }
+                TaskList.unmarkTask(userInput);
                 break;
             case "list":
                 TaskList.listTasks();
@@ -40,13 +28,7 @@ public class Parser {
                 TaskList.addTask(userInput);
                 break;
             case "delete":
-                try {
-                    TaskList.deleteTask(userInput);
-                } catch (DeleteNumberError e) {
-                    Ui.missingNumberMessage("delete");
-                } catch (DeleteItemError e) {
-                    Ui.inoperableItemMessage("delete");
-                }
+                TaskList.deleteTask(userInput);
                 break;
             default:
                 Ui.invalidCommand();
@@ -55,10 +37,10 @@ public class Parser {
     }
 
     public static String commandCheck(String line) {
-        String appendedLine = cleanFrontSpacing(line);
+        String appendedLine = line.trim();
         if (appendedLine.startsWith("bye")) {
             return "bye";
-        } else if (appendedLine.startsWith("mark")) {
+        } else if (line.trim().startsWith("mark")) {
             return "mark";
         } else if (appendedLine.startsWith("unmark")) {
             return "unmark";
@@ -74,9 +56,5 @@ public class Parser {
             return "delete";
         }
         return "";
-    }
-
-    private static String cleanFrontSpacing(String line) {
-        return line.replaceFirst("^\\s*", "");
     }
 }
