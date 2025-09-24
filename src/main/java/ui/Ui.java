@@ -13,6 +13,9 @@ public class Ui { //deals with interactions with the user
     public static void print(String line) {
         System.out.print(line);
     }
+    public static void pt(String line) {
+        System.out.println("GBW: "+ line);
+    }
 
     public static void welcomeMenu(){
         String logo= """
@@ -32,8 +35,8 @@ public class Ui { //deals with interactions with the user
                 "\n\tHere are the following commands:";
         String commandMessage = """
                 \n\t-todo <item>
-                \t-deadline <item> /by <date>
-                \t-event <item> /from <date> /to <date>
+                \t-deadline <item> /by <date (YYYY-MM-DD HHMM)>
+                \t-event <item> /from <date (YYYY-MM-DD HHMM)> /to <date (YYYY-MM-DD HHMM)>
                 \t-mark <itemNumber>
                 \t-unmark <itemNumber>
                 \t-list
@@ -113,11 +116,20 @@ public class Ui { //deals with interactions with the user
     public static void inoperableItemMessage(String commandType) {
         println("\tERROR(" + commandType + "): Item does not exist");
     }
-    public static void invalidCommand() {
+    public static void invalidCommandMessage() {
         println("\tERROR: Invalid command");
+    }
+    public static void invalidDateFormatMessage() {
+        println("\tInvalid date format (YYYY-MM-DD)");
+    }
+    public static void invalidTimelineMessage() {
+        println("\tInvalid Timeline");
     }
 
     public static void IOExceptionErrorMessage() {
         println("IO: something wrong");
     }
+
+
+
 }

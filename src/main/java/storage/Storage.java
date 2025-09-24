@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import Bert.Deadline;
@@ -60,15 +62,23 @@ public class Storage {
         }
         else if(taskType.equalsIgnoreCase("D")){
             String taskName = description.substring(0,description.indexOf("(by:")).trim();
-            String byDate =  description.substring(description.indexOf("(by:")+4).trim();
-            byDate = byDate.replace(")","");
-            taskAL.add(new Deadline(taskName, byDate));
+            String byDateTime =  description.substring(description.indexOf("(by:")+4).trim();
+            byDateTime = byDateTime.replace(")","");
+            byDateTime = byDateTime.replace(" ","T");
+            LocalDateTime parsedByDateTime = LocalDateTime.parse(byDateTime);
+            taskAL.add(new Deadline(taskName, parsedByDateTime));
         } else if(taskType.equalsIgnoreCase("E")){
             String taskName = description.substring(0,description.indexOf("(From:")).trim();
             String fromTime =  description.substring(description.indexOf("(From:")+6,description.indexOf("--")).trim();
             String toTime =  description.substring(description.indexOf("To:")+3).trim();
             toTime = toTime.replace(")","");
-            taskAL.add(new Event(taskName, fromTime, toTime));
+
+            fromTime = fromTime.replace(" ","T");
+            toTime = toTime.replace(" ","T");
+
+            LocalDateTime parsedFromTime = LocalDateTime.parse(fromTime);
+            LocalDateTime parsedToTime = LocalDateTime.parse(toTime);
+            taskAL.add(new Event(taskName, parsedFromTime, parsedToTime));
         }
     }
 
@@ -92,6 +102,9 @@ public class Storage {
         }
     }
     private static void createDirectory() {
+        if(Files.exists(saveFileDirectoryPath)) {
+            return;
+        }
         try {
             Files.createDirectories(saveFileDirectoryPath.getParent());
             Files.createFile(saveFileDirectoryPath);

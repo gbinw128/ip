@@ -1,25 +1,30 @@
 package Bert;
 
-public class Event extends Task{
-    protected String startTime;
-    protected String endTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    public Event(String description,String startTime,String endTime) {
+public class Event extends Task{
+    protected LocalDateTime startDateTime;
+    protected LocalDateTime endDateTime;
+
+    public Event(String description,LocalDateTime startDateTime,LocalDateTime endDateTime) {
         super(description);
-        setStartTime(startTime);
-        setEndTime(endTime);
+        setStartDateTime(startDateTime);
+        setEndDateTime(endDateTime);
     }
-    public void setStartTime(String startTime)
+    public void setStartDateTime(LocalDateTime startDateTime)
     {
-        this.startTime=startTime;
+        this.startDateTime=startDateTime;
     }
-    public void setEndTime(String endTime)
+    public void setEndDateTime(LocalDateTime endDateTime)
     {
-        this.endTime=endTime;
+        this.endDateTime=endDateTime;
     }
 
     @Override
     public String toString() {
-        return "[E]" +super.toString() + " (From:" + startTime + " --> To:"+endTime + ")";
+        return "[E]" +super.toString() + " (From:" + startDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+                + " --> To:" + endDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + ")";
     }
 }

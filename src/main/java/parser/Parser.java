@@ -1,10 +1,5 @@
 package parser;
 
-import exceptions.DeleteItemError;
-import exceptions.DeleteNumberError;
-import exceptions.MarkUnmarkItemError;
-import exceptions.MarkUnmarkNumberError;
-
 import ui.Ui;
 import tasklist.TaskList;
 
@@ -31,13 +26,13 @@ public class Parser {
                 TaskList.deleteTask(userInput);
                 break;
             default:
-                Ui.invalidCommand();
+                Ui.invalidCommandMessage();
                 break;
         }
     }
 
     public static String commandCheck(String line) {
-        String appendedLine = line.trim();
+        String appendedLine = line.trim().toLowerCase();
         if (appendedLine.startsWith("bye")) {
             return "bye";
         } else if (line.trim().startsWith("mark")) {
