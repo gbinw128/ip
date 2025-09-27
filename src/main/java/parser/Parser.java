@@ -5,17 +5,22 @@ import tasklist.TaskList;
 
 public class Parser {
 
-    public static void handleCommand(String userInput) {
-        String command = commandCheck(userInput);
+    /**
+     * Read's user input and run different switch case depending on command by user
+     *
+     * @param line User's direct input
+     */
+    public static void handleCommand(String line) {
+        String command = commandCheck(line);
         switch (command) {
             case "mark":
-                TaskList.markTask(userInput);
+                TaskList.markTask(line);
                 break;
             case "unmark":
-                TaskList.unmarkTask(userInput);
+                TaskList.unmarkTask(line);
                 break;
             case "find":
-                TaskList.findTasks(userInput);
+                TaskList.findTasks(line);
                 break;
             case "list":
                 TaskList.listTasks();
@@ -23,10 +28,10 @@ public class Parser {
             case "todo":
             case "deadline":
             case "event":
-                TaskList.addTask(userInput);
+                TaskList.addTask(line);
                 break;
             case "delete":
-                TaskList.deleteTask(userInput);
+                TaskList.deleteTask(line);
                 break;
             default:
                 Ui.invalidCommandMessage();
@@ -34,6 +39,11 @@ public class Parser {
         }
     }
 
+    /**
+     * Return different command strings after verifying the first word of the user's input
+     *
+     * @param line User's direct input
+     */
     public static String commandCheck(String line) {
         String appendedLine = line.trim().toLowerCase();
         if (appendedLine.startsWith("bye")) {

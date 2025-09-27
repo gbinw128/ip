@@ -29,6 +29,10 @@ public class Storage {
         this.saveFileDirectoryPath = Paths.get(incomingSaveFilePath);
     }
 
+    /**
+     * Check if file exists, if file is empty or if file has valid data.
+     * If file has valid data, intialize data from file to ArrayList: taskAL
+     */
     public void readFromSaveFile() {
         try {
             File saveFile = new File(saveFilePath);
@@ -82,7 +86,9 @@ public class Storage {
         }
     }
 
-
+    /**
+     * Called upon exit. Write all current tasks into the save file
+     */
     public static void writeToSaveFile(){
         try {
             createDirectory();
