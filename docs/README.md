@@ -17,7 +17,7 @@ pressing enter will exit the program.
 
 # Features
 
-###
+
 ## List tasks: `list`
 <details>
 <summary>Shows the list of all recorded tasks.</summary>
@@ -30,7 +30,7 @@ Example:
 </details>
 
 
-###
+
 ## Finding task: `find`
 <details>
 <summary>Find all tasks whose item contains the given keyword.</summary>
@@ -42,7 +42,7 @@ Example:
 ![find](./assets/find_example.png)
 </details>
 
-###
+
 ## Marking a task as done: `mark`
 <details>
 <summary>Marks a task as done.</summary>
@@ -54,7 +54,7 @@ Example:
 ![mark](./assets/mark_example.png)
 </details>
 
-###
+
 ## Unmarking a task as done: `unmark`
 <details>
 <summary>Unmarks a task as done.</summary>
@@ -66,7 +66,7 @@ Example:
 ![unmark](./assets/unmark_example.png)
 </details>
 
-###
+
 ## Adding a Todo-type task: `todo`
 <details>
 <summary>Adds a task that is need to be done.</summary>
@@ -78,7 +78,7 @@ Example:
 ![todo](./assets/todo_example.png)
 </details>
 
-###
+
 ## Adding a Deadline-type task: `deadline`
 <details>
 <summary>Adds a task that is need to be done by a certain date/time.</summary>
@@ -90,7 +90,7 @@ Example:
 ![deadline](./assets/deadline_example.png)
 </details>
 
-###
+
 ## Adding a Event-type task: `event`
 <details>
 <summary>Adds a task that has a starting and ending date/time.</summary>
@@ -102,7 +102,7 @@ Example:
 ![event](./assets/event_example.png)
 </details>
 
-###
+
 ## Exiting program `bye`
 <details>
 <summary>Exits the program.</summary>
@@ -111,7 +111,7 @@ Format: `bye`
 </details>
 
 
-#
+
 ## Saving data
 Task data in BERT are saved in the hard disk manually in a text file
 only when exiting the program, through the `bye` command.
