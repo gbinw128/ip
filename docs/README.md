@@ -1,8 +1,5 @@
-# BERT (Bot for Echo, Response and Talk) User Guide
-![BERT](./assets/bert.png)
 
-BERT(Bot for Echo, Response and Talk) is a task tracking chatbot, 
-being uses in Command Line Interface(CLI).
+![BERT](./assets/bert.png)
 
 # Quick Start
 1. Ensure you have Java 17 or above installed in your Computer.
