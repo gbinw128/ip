@@ -19,96 +19,96 @@ pressing enter will exit the program.
 
 
 ## List tasks: `list`
-<details>
-<summary>Shows the list of all recorded tasks.</summary>
+
+Shows the list of all recorded tasks.
 
 Format: `list`
 
 Example:
 
 ![list](./assets/list_example.png)
-</details>
+
 
 
 
 ## Finding task: `find`
-<details>
-<summary>Find all tasks whose item contains the given keyword.</summary>
+
+Find all tasks whose item contains the given keyword.
 
 Format:`find <keyword>`
 
 Example:
 
 ![find](./assets/find_example.png)
-</details>
+
 
 
 ## Marking a task as done: `mark`
-<details>
-<summary>Marks a task as done.</summary>
+
+Marks a task as done.
 
 Format: `mark <item number>`
 
 Example:
 
 ![mark](./assets/mark_example.png)
-</details>
+
 
 
 ## Unmarking a task as done: `unmark`
-<details>
-<summary>Unmarks a task as done.</summary>
+
+Unmarks a task as done.
 
 Format: `unmark <item number>`
 
 Example:
 
 ![unmark](./assets/unmark_example.png)
-</details>
+
 
 
 ## Adding a Todo-type task: `todo`
-<details>
-<summary>Adds a task that is need to be done.</summary>
+
+Adds a task that is need to be done.
 
 Format: `todo <item>`
 
 Example:
 
 ![todo](./assets/todo_example.png)
-</details>
+
 
 
 ## Adding a Deadline-type task: `deadline`
-<details>
-<summary>Adds a task that is need to be done by a certain date/time.</summary>
+
+Adds a task that is need to be done by a certain date/time.
 
 Format: `deadline <item> /by <date(YYYY-MM-DD HHMM)>`
 
 Example:
 
 ![deadline](./assets/deadline_example.png)
-</details>
 
 
-## Adding a Event-type task: `event`
-<details>
-<summary>Adds a task that has a starting and ending date/time.</summary>
+
+## Adding an Event-type task: `event`
+
+Adds a task that has a starting and ending date/time.
 
 Format: `event <item> /from <date(YYYY-MM-DD HHMM)> /to <date(YYYY-MM-DD HHMM)>`
 
 Example:
 
 ![event](./assets/event_example.png)
-</details>
+
 
 
 ## Exiting program `bye`
-<details>
-<summary>Exits the program.</summary>
+
+Exits the program.
 
 Format: `bye`
-</details>
+
 
 
 
