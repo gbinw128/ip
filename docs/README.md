@@ -15,6 +15,8 @@ BERT(Preferably an empty folder).
 pressing enter will exit the program.
 6. Refer to the [Features](#features) below for details of each command.
 
+<br/><br/>
+
 # Features
 
 
@@ -28,8 +30,7 @@ Example:
 
 ![list](./assets/list_example.png)
 
-
-
+<br/><br/>
 
 ## Finding task: `find`
 
@@ -41,7 +42,7 @@ Example:
 
 ![find](./assets/find_example.png)
 
-
+<br/><br/>
 
 ## Marking a task as done: `mark`
 
@@ -53,7 +54,7 @@ Example:
 
 ![mark](./assets/mark_example.png)
 
-
+<br/><br/>
 
 ## Unmarking a task as done: `unmark`
 
@@ -65,7 +66,7 @@ Example:
 
 ![unmark](./assets/unmark_example.png)
 
-
+<br/><br/>
 
 ## Adding a Todo-type task: `todo`
 
@@ -77,7 +78,7 @@ Example:
 
 ![todo](./assets/todo_example.png)
 
-
+<br/><br/>
 
 ## Adding a Deadline-type task: `deadline`
 
@@ -89,7 +90,7 @@ Example:
 
 ![deadline](./assets/deadline_example.png)
 
-
+<br/><br/>
 
 ## Adding an Event-type task: `event`
 
@@ -101,7 +102,7 @@ Example:
 
 ![event](./assets/event_example.png)
 
-
+<br/><br/>
 
 ## Exiting program `bye`
 
@@ -109,12 +110,14 @@ Exits the program.
 
 Format: `bye`
 
-
+<br/><br/>
 
 
 ## Saving data
 Task data in BERT are saved in the hard disk manually in a text file
 only when exiting the program, through the `bye` command.
+
+<br/><br/>
 
 # Command Summary
 
