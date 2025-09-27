@@ -65,6 +65,34 @@ public class TaskList {
         }
     }
 
+    public static void findTasks(String line) {
+        try{
+            int findWordSize = "find".length();
+            String cleanLine = line.trim();
+            if (cleanLine.length() <= findWordSize) {
+                throw new EmptyFindErrorException();
+            }
+            String keyword = cleanLine.substring(findWordSize).trim();
+
+            int[] printIndex = {1};
+            boolean found = taskAL.stream()
+                    .anyMatch(task -> task.getDescription().contains(keyword));
+
+            if(!found){
+                throw new FindNothingException();
+            } else{
+                Ui.findMatchingTaskHeaderMessage();
+                taskAL.stream()
+                        .filter(task -> task.getDescription().contains(keyword))
+                        .forEach(task -> Ui.findAllTasksMessage(task, printIndex[0]++));
+            }
+        } catch (EmptyFindErrorException e) {
+            Ui.emptyFindStringExceptionMessage();
+        } catch (FindNothingException e) {
+            Ui.findNothingMessage();
+        }
+    }
+
     public static void listTasks() {
         Ui.listAllTasksMessage();
     }
@@ -216,7 +244,6 @@ public class TaskList {
         }
         taskAL.add(new Event(eventDescription, parsedStartDateTime, parsedEndDateTime));
     }
-
     private static void eventExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
         if (itemCheck.isEmpty()) {
@@ -235,6 +262,8 @@ public class TaskList {
             throw new EventDateError();
         }
     }
+
+
 
     public static String addCharToString(String str, char c,
                                          int pos) {

@@ -14,6 +14,9 @@ public class Parser {
             case "unmark":
                 TaskList.unmarkTask(userInput);
                 break;
+            case "find":
+                TaskList.findTasks(userInput);
+                break;
             case "list":
                 TaskList.listTasks();
                 break;
@@ -49,6 +52,8 @@ public class Parser {
             return "event";
         } else if (appendedLine.startsWith("delete")) {
             return "delete";
+        } else if (appendedLine.startsWith("find")) {
+            return "find";
         }
         return "";
     }
