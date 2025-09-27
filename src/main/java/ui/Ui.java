@@ -81,6 +81,17 @@ public class Ui { //deals with interactions with the user
             println("\t\t" + printIndex + ". " + task);
         }
     }
+
+    public static void findAllTasksMessage(Task task, int printIndex) {
+        System.out.println("\t\t" + printIndex + ". " + task);
+    }
+    public static void findMatchingTaskHeaderMessage() {
+        System.out.println("\tHere are the matching tasks in your list:");
+    }
+    public static void findNothingMessage() {
+        System.out.println("\tNo tasks found");
+    }
+
     public static void markTaskMessage(Task taskToMarkDone) {
         println("\tNice! I've marked this task as done:");
         println("\t\t" + taskToMarkDone);
@@ -109,6 +120,9 @@ public class Ui { //deals with interactions with the user
     public static void emptyEventItemExceptionMessage() {
         println("\tERROR(Event): Empty item in Event");
     }
+    public static void emptyFindStringExceptionMessage(){
+        println("\tERROR(Find): Empty String in Find");
+    }
 
     public static void missingNumberMessage(String commandType) {
         println("\tERROR(" + commandType + ") : Number Missing");
@@ -129,7 +143,5 @@ public class Ui { //deals with interactions with the user
     public static void IOExceptionErrorMessage() {
         println("IO: something wrong");
     }
-
-
 
 }
