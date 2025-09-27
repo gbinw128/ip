@@ -37,6 +37,7 @@ public class Ui { //deals with interactions with the user
                 \n\t-todo <item>
                 \t-deadline <item> /by <date (YYYY-MM-DD HHMM)>
                 \t-event <item> /from <date (YYYY-MM-DD HHMM)> /to <date (YYYY-MM-DD HHMM)>
+                \t-find <keyword>
                 \t-mark <itemNumber>
                 \t-unmark <itemNumber>
                 \t-list
