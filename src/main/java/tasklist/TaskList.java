@@ -19,7 +19,12 @@ import static Bert.Bert.taskAL;
 
 
 public class TaskList {
-
+    /**
+     * Marks task based on input number from user,
+     * then prints out the task itself to show user that it is marked
+     *
+     * @param line User's direct input
+     */
     public static void markTask(String line) {
         try {
             int markWordSize = "mark".length();
@@ -41,7 +46,12 @@ public class TaskList {
             Ui.inoperableItemMessage("mark");
         }
     }
-
+    /**
+     * Unmarks task based on input number from user,
+     * then prints out the task itself to show user that it is unmarked
+     *
+     * @param line User's direct input
+     */
     public static void unmarkTask(String line) {
         try {
             int unmarkWordSize = "unmark".length();
@@ -64,7 +74,12 @@ public class TaskList {
             Ui.inoperableItemMessage("unmark");
         }
     }
-
+    /**
+     * Find tasks based on input from user
+     * then prints out all matching tasks to show user
+     *
+     * @param line User's direct input
+     */
     public static void findTasks(String line) {
         try{
             int findWordSize = "find".length();
@@ -92,11 +107,18 @@ public class TaskList {
             Ui.findNothingMessage();
         }
     }
-
+    /**
+     * List all tasks store in ArrayList: taskAL
+     */
     public static void listTasks() {
         Ui.listAllTasksMessage();
     }
-
+    /**
+     * Delete task based on input number from user,
+     * then prints out the task that is being deleted to show user
+     *
+     * @param line User's direct input
+     */
     public static void deleteTask(String line) {
         try {
             int deleteWordSize = "delete".length();
@@ -117,7 +139,12 @@ public class TaskList {
             Ui.inoperableItemMessage("delete");
         }
     }
-
+    /**
+     * Add task based on input from user,
+     * then prints out the task itself to show user that it is added
+     *
+     * @param line User's direct input
+     */
     public static void addTask(String line) {
         String taskType = Parser.commandCheck(line);
         String cleanLine = line.trim();
@@ -263,9 +290,7 @@ public class TaskList {
         }
     }
 
-
-
-    public static String addCharToString(String str, char c,
+    private static String addCharToString(String str, char c,
                                          int pos) {
 
         // Creating an object of StringBuffer class
