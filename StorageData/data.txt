@@ -1,0 +1,5 @@
+[D][ ] testoisTes (by: 2025-10-12 15:00)
+[E][ ] tiohatahio (From:2025-10-12 15:00 --> To:2025-10-13 15:00)
+[T][X] read
+[T][ ] readabook
+[T][ ] readnotes
