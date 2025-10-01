@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
@@ -51,7 +50,7 @@ public class Storage {
                     parsingFromSaveFile(s);
                 }
                 if (!taskAL.isEmpty()) { //if file has imported all its data
-                    Ui.fileIntializedMessage();
+                    Ui.fileInitializedMessage();
                 }
                 return;
             }

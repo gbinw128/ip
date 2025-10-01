@@ -49,28 +49,9 @@ public class Ui { //deals with interactions with the user
         println(goodbyeMessage);
     }
 
-    public static void fileErrorMessage() {
-        println("Error: could not create file");
+    public static void invalidCommandMessage() {
+        println("\tERROR: Invalid command");
     }
-    public static void fileDirectoryErrorMessage() {
-        println("\tError: could not create directory");
-    }
-    public static void fileEmptyMessage(){
-        println("\tFile empty, nothing initialized");
-    }
-    public static void fileIntializedMessage() {
-        println("\tTasks have been initialized. Use 'list' to see.");
-    }
-    public static void fileWrittenMessage() {
-        println("\tTasks have been written to the file.");
-    }
-    public static void fileNotFoundMessage() {
-        println("Save File not Found");
-    }
-    public static void fileFoundMessage() {
-        println("Save File Found");
-    }
-
     public static void successfulAddTaskMessage(ArrayList<Task> taskAL) {
         println("\tGot it. I've added this task:\n\t\t" + taskAL.get(taskAL.size()-1));
         println("\tNow you have " + taskAL.size() + " tasks in the list.");
@@ -82,17 +63,12 @@ public class Ui { //deals with interactions with the user
             println("\t\t" + printIndex + ". " + task);
         }
     }
-
-    public static void findAllTasksMessage(Task task, int printIndex) {
-        System.out.println("\t\t" + printIndex + ". " + task);
+    public static void invalidDateFormatMessage() {
+        println("\tInvalid date format (YYYY-MM-DD)");
     }
-    public static void findMatchingTaskHeaderMessage() {
-        System.out.println("\tHere are the matching tasks in your list:");
+    public static void IOExceptionErrorMessage() {
+        println("IO: something wrong");
     }
-    public static void findNothingMessage() {
-        System.out.println("\tNo tasks found");
-    }
-
     public static void markTaskMessage(Task taskToMarkDone) {
         println("\tNice! I've marked this task as done:");
         println("\t\t" + taskToMarkDone);
@@ -106,43 +82,90 @@ public class Ui { //deals with interactions with the user
         println("\t\t" + taskAL.get(taskNumToDelete));
     }
 
+    /**
+     * Print lines for during file saving or file initialization
+     */
+    public static void fileErrorMessage() {
+        println("Error: could not create file");
+    }
+    public static void fileDirectoryErrorMessage() {
+        println("\tError: could not create directory");
+    }
+    public static void fileEmptyMessage(){
+        println("\tFile empty, nothing initialized");
+    }
+    public static void fileInitializedMessage() {
+        println("\tTasks have been initialized. Use 'list' to see.");
+    }
+    public static void fileWrittenMessage() {
+        println("\tTasks have been written to the file.");
+    }
+    public static void fileNotFoundMessage() {
+        println("Save File not Found");
+    }
+    public static void fileFoundMessage() {
+        println("Save File Found");
+    }
+
+    /**
+     * Print lines for 'find' command
+     */
+    public static void findAllTasksMessage(Task task, int printIndex) {
+        System.out.println("\t\t" + printIndex + ". " + task);
+    }
+    public static void findMatchingTaskHeaderMessage() {
+        System.out.println("\tHere are the matching tasks in your list:");
+    }
+    public static void findNothingMessage() {
+        System.out.println("\tNo tasks found");
+    }
+    public static void emptyFindStringExceptionMessage(){
+        println("\tERROR(Find): Empty String in Find");
+    }
+
+
+    /**
+     * Print lines for todo data
+     */
     public static void emptyTodoExceptionMessage() {
         println("\tERROR(Todo): Empty item in ToDo");
     }
+    /**
+     * Print lines for deadline data
+     */
     public static void emptyDeadlineItemExceptionMessage() {
         println("\tERROR(Deadline): Empty item in Deadline");
     }
     public static void emptyDeadlineDateExceptionMessage() {
         println("\tERROR(Deadline): Empty date in Deadline");
     }
+    /**
+     * Print lines for event data
+     */
     public static void emptyEventDateExceptionMessage() {
         println("\tERROR(Event): Empty date in Event");
     }
     public static void emptyEventItemExceptionMessage() {
         println("\tERROR(Event): Empty item in Event");
     }
-    public static void emptyFindStringExceptionMessage(){
-        println("\tERROR(Find): Empty String in Find");
-    }
-
-    public static void missingNumberMessage(String commandType) {
-        println("\tERROR(" + commandType + ") : Number Missing");
-    }
-    public static void inoperableItemMessage(String commandType) {
-        println("\tERROR(" + commandType + "): Item does not exist");
-    }
-    public static void invalidCommandMessage() {
-        println("\tERROR: Invalid command");
-    }
-    public static void invalidDateFormatMessage() {
-        println("\tInvalid date format (YYYY-MM-DD)");
-    }
     public static void invalidTimelineMessage() {
         println("\tInvalid Timeline");
     }
 
-    public static void IOExceptionErrorMessage() {
-        println("IO: something wrong");
+    /**
+     * print only when user did not enter an index
+     * @param commandType is the commandType used: mark,unmark,delete
+     */
+    public static void missingNumberMessage(String commandType) {
+        println("\tERROR(" + commandType + ") : Number Missing");
     }
+    /**
+     * print only when user enter an invalid index
+     * @param commandType is the commandType used: mark,unmark,delete
+     */
+    public static void inoperableItemMessage(String commandType) {
+        println("\tERROR(" + commandType + "): Item does not exist");
+    }
+
 
 }
