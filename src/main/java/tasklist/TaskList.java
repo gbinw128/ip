@@ -46,6 +46,7 @@ public class TaskList {
             Ui.inoperableItemMessage("mark");
         }
     }
+
     /**
      * Unmarks task based on input number from user,
      * then prints out the task itself to show user that it is unmarked
@@ -74,6 +75,7 @@ public class TaskList {
             Ui.inoperableItemMessage("unmark");
         }
     }
+
     /**
      * Find tasks based on input from user
      * then prints out all matching tasks to show user
@@ -81,7 +83,7 @@ public class TaskList {
      * @param line User's direct input
      */
     public static void findTasks(String line) {
-        try{
+        try {
             int findWordSize = "find".length();
             String cleanLine = line.trim();
             if (cleanLine.length() <= findWordSize) {
@@ -93,9 +95,9 @@ public class TaskList {
             boolean found = taskAL.stream()
                     .anyMatch(task -> task.getDescription().contains(keyword));
 
-            if(!found){
+            if (!found) {
                 throw new FindNothingException();
-            } else{
+            } else {
                 Ui.findMatchingTaskHeaderMessage();
                 taskAL.stream()
                         .filter(task -> task.getDescription().contains(keyword))
@@ -107,12 +109,14 @@ public class TaskList {
             Ui.findNothingMessage();
         }
     }
+
     /**
      * List all tasks store in ArrayList: taskAL
      */
     public static void listTasks() {
         Ui.listAllTasksMessage();
     }
+
     /**
      * Delete task based on input number from user,
      * then prints out the task that is being deleted to show user
@@ -139,6 +143,7 @@ public class TaskList {
             Ui.inoperableItemMessage("delete");
         }
     }
+
     /**
      * Add task based on input from user,
      * then prints out the task itself to show user that it is added
@@ -266,11 +271,12 @@ public class TaskList {
         if (parsedStartDate.isAfter(parsedEndDate)) {
             throw new EventTimelineError();
         }
-        if(parsedStartDate.isEqual(parsedEndDate) && parsedStartTime.isAfter(parsedEndTime)) {
+        if (parsedStartDate.isEqual(parsedEndDate) && parsedStartTime.isAfter(parsedEndTime)) {
             throw new EventTimelineError();
         }
         taskAL.add(new Event(eventDescription, parsedStartDateTime, parsedEndDateTime));
     }
+
     private static void eventExceptionCheck(String cleanLine, int commandLength) {
         String itemCheck = cleanLine.substring(commandLength).trim();
         if (itemCheck.isEmpty()) {
@@ -291,7 +297,7 @@ public class TaskList {
     }
 
     private static String addCharToString(String str, char c,
-                                         int pos) {
+                                          int pos) {
 
         // Creating an object of StringBuffer class
         StringBuffer stringBuffer = new StringBuffer(str);
