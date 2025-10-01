@@ -101,6 +101,18 @@ Example:
 
 <br/><br/>
 
+## Deleting a task: `delete`
+
+Deletes a task from the existing list.
+
+Format: `delete 3`
+
+Example:
+
+![event](./assets/delete_example.png)
+
+<br/><br/>
+
 ## Exiting program `bye`
 
 Exits the program.
