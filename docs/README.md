@@ -3,7 +3,7 @@
 
 # Quick Start
 1. Ensure you have Java 17 or above installed in your Computer.
-2. Download the latest `.jar` file [here](https://github.com/gbinw128/ip/releases/tag/A-Jar).
+2. Download the latest `.jar` file [here](https://github.com/gbinw128/ip/releases).
 3. Copy the `.jar` file to the folder you want to use as the home folder for 
 BERT(Preferably an empty folder).
 4. Open a command terminal, `cd` into the folder the `.jar` is in and run
